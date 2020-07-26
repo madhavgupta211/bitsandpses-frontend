@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import "./home.css";
-import { Route } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
 import NotFound from '../NotFound/notfoundComponent';
+import Header from './Header/headerComponent';
 
 class Home extends Component {
   constructor(props) {
@@ -13,7 +14,14 @@ class Home extends Component {
     window.localStorage.setItem("stationNo",stationNo.toString(10));
     if(stationNo === 1 || stationNo === 2) {
       return(
-        <h1>{stationNo}</h1>
+        <div>
+          <Header urlinfo = {this.props.match} />
+          <Switch>
+            <Route path = {this.props.match.url + '/home'}>
+              <h1>Home</h1>
+            </Route>
+          </Switch>
+        </div>
       );
     }
     else {
