@@ -1,0 +1,28 @@
+{
+  "name": "pswebsite",
+  "version": "1.0.0",
+  "description": "ps station finder",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/madhavgupta211/pswebsite.git"
+  },
+  "keywords": [
+    "ps",
+    "practice",
+    "school",
+    "station"
+  ],
+  "author": "madhavgupta211 prathamgupta1002",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/madhavgupta211/pswebsite/issues"
+  },
+  "homepage": "https://github.com/madhavgupta211/pswebsite#readme",
+  "devDependencies": {
+    "create-react-app": "^3.4.1"
+  }
+}
