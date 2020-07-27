@@ -3,13 +3,9 @@ const router = new express.Router();
 const auth = require('../middleware/auth');
 const Station = require('../models/station');
 
-// in case someone tries to load home directly, load index
-router.get('/home', (req, res) => {
-  res.redirect('/');
-});
 
 // get details of a station for ps1
-router.get('/ps1/:station', async (req, res) => {
+router.get('/api/1/:station', async (req, res) => {
   const station = await Station.findOne({ category: { type: 'ps1' }, slug: req.params.station });
 
   if (!station) {
@@ -21,7 +17,7 @@ router.get('/ps1/:station', async (req, res) => {
 });
 
 // search the stations by name for ps1
-router.get('/ps1/search', async (req, res) => {
+router.get('/api/1/search', async (req, res) => {
   try {
     const stations = await Station.find({
       $text: { $search: req.query.name },
@@ -40,7 +36,7 @@ router.get('/ps1/search', async (req, res) => {
 });
 
 // post a new comment on the opportunity for ps1
-router.post('/ps1/:station/comment', auth, async (req, res) => {
+router.post('/api/1/:station/comment', auth, async (req, res) => {
   const station = await Station.findOne({ category: { type: 'ps1' }, slug: req.params.station });
 
   if (!station) {
@@ -64,7 +60,7 @@ router.post('/ps1/:station/comment', auth, async (req, res) => {
 });
 
 // post a new reply on a comment for ps1
-router.post('/ps1/:station/:comment/reply', auth, async (req, res) => {
+router.post('/api/1/:station/:comment/reply', auth, async (req, res) => {
   const station = await Station.findOne({ category: { type: 'ps1' }, slug: req.params.station });
 
   if (!station) {

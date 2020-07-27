@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 const Station = require('../models/station');
 
 // get details of a station for ps2
-router.get('/ps2/:station', async (req, res) => {
+router.get('/api/2/:station', async (req, res) => {
   const station = await Station.findOne({ category: { type: 'ps2' }, slug: req.params.station });
 
   if (!station) {
@@ -16,7 +16,7 @@ router.get('/ps2/:station', async (req, res) => {
 });
 
 // search the stations by name for ps2
-router.get('/ps2/search', async (req, res) => {
+router.get('/api/2/search', async (req, res) => {
   try {
     const stations = await Station.find({
       $text: { $search: req.query.name },
@@ -35,7 +35,7 @@ router.get('/ps2/search', async (req, res) => {
 });
 
 // post a new comment on the opportunity for ps2
-router.post('/ps2/:station/comment', auth, async (req, res) => {
+router.post('/api/2/:station/comment', auth, async (req, res) => {
   const station = await Station.findOne({ category: { type: 'ps2' }, slug: req.params.station });
 
   if (!station) {
@@ -59,7 +59,7 @@ router.post('/ps2/:station/comment', auth, async (req, res) => {
 });
 
 // post a new reply on a comment for ps1
-router.post('/ps2/:station/:comment/reply', auth, async (req, res) => {
+router.post('/api/2/:station/:comment/reply', auth, async (req, res) => {
   const station = await Station.findOne({ category: { type: 'ps2' }, slug: req.params.station });
 
   if (!station) {
