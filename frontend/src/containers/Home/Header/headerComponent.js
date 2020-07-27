@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand, Nav, NavItem, Input, Button } from 'reactstrap';
-import { NavLink } from 'react-router-dom';
+import { Navbar, NavbarBrand, Nav, NavItem, Input, Button, Form, FormGroup } from 'reactstrap';
+import { NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
+import './header.css';
 
 class Header extends Component {
 
@@ -9,11 +10,26 @@ class Header extends Component {
     super(props);
     this.loginHandle = this.loginHandle.bind(this);
     this.handlelogout = this.handlelogout.bind(this);
+    this.displayStationButton = this.displayStationButton.bind(this);
     this.state = {
-      userLoggedin: true
+      userLoggedin: true,
     };
   }
 
+  displayStationButton = (num) => {
+    if(parseInt(window.localStorage.getItem("stationNo")) === num)
+    {
+      return(
+        <Button className = "btn" disabled>PS{num}</Button>
+      );
+    }
+    else {
+      return(
+        <Link to = { '/' + num + '/home' } className = "btn btn-primary">PS{num}</Link>
+      );
+    }
+  }
+  
   handlelogout = async() => {
     try {
       const cookies = document.cookie.split('; ');
@@ -73,6 +89,11 @@ class Header extends Component {
           </NavItem>
           <NavItem className = "m-2">
             <this.loginHandle />
+          </NavItem>
+          <NavItem className = "m-2">
+            {this.displayStationButton(1)}
+            &nbsp;
+            {this.displayStationButton(2)}
           </NavItem>
         </Nav>
       </Navbar>

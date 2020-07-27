@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import "./home.css";
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import NotFound from '../NotFound/notfoundComponent';
 import Header from './Header/headerComponent';
 
@@ -20,6 +20,7 @@ class Home extends Component {
             <Route path = {this.props.match.url + '/home'}>
               <h1>Home</h1>
             </Route>
+            <Redirect to = {this.props.match.url + '/home'} />
           </Switch>
         </div>
       );
