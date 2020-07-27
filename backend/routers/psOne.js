@@ -17,7 +17,7 @@ router.get('/api/1/:station', async (req, res) => {
 });
 
 // search the stations by name for ps1
-router.get('/api/1/search', async (req, res) => {
+router.get('/api/1', async (req, res) => {
   try {
     const stations = await Station.find({
       $text: { $search: req.query.name },

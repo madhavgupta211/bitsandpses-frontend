@@ -3,31 +3,60 @@ import { Form, FormGroup, Input, Button } from 'reactstrap';
 import "./homed.css";
 import axios from 'axios';
 
+function ListDisplay ({list}) {
+  if(list === null) {
+    return(
+      <div />
+    );
+  }
+  else {
+    return(
+      <ul className = "list-unstyled">
+        {
+          list.map((item) => {
+            return(
+              <li>{item.station.name}</li>
+            );
+          })
+        }
+      </ul>
+    );
+  }
+}
+
 class Homed extends Component {
   constructor(props) {
     super(props);
     this.findplaceholder = this.findplaceholder.bind(this);
-    this.displayResults = this.displayResults.bind(this);
-    this.fetchResults = this.fetchResults.bind(this);
+    this.state = {
+      searchData: null
+    }
   }
   
-  fetchResults = async() => {
+  async componentDidMount() {
+    const query = this.props.location.search.split('=')[1];
     try {
-      const query = this.props.location.search.split('=')[1];
-      const response = await axios({
-        url: '/api/' + window.localStorage.getItem("stationNo") + '/search?name=' + query,
-        method: 'get'
-      });
-      if(response.status === 200) {
-        return response;
+      if(this.props.location.search !== "") {
+        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?name=' + query );
+        if(response.ok)
+        {
+          const json = await response.json();
+          console.log(json);
+          this.setState({
+            searchData: json
+          });
+        }
+        else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      } else {
+        this.setState({
+          searchData: null
+        })
       }
-      else {
-        var error = new Error('Error ' + response.status + ': ' + response.statusText);
-        error.response = response;
-        throw error;
-      }
-    }
-    catch(error) {
+    } catch(error) {
       alert("could not fetch search results.\nError: "+ error.message);
     }
   }
@@ -41,34 +70,7 @@ class Homed extends Component {
     }
   };
 
-  displayResults = () => {
-    if(this.props.location.search !== "") {
-      const results = this.fetchResults();
-      let list = results.map((item) => item.name);
-      return(
-        <div className = "row-content">
-          <h2>Search results :</h2>
-          <ul className = "list-unstyled">
-            {  
-              list.map((item) => {
-                return(
-                  <li>{item}</li>
-                );
-              })
-            }
-          </ul>
-        </div>
-      );
-    }
-    else {
-      return(
-        <div />
-      );
-    }
-  }
-
   render() {
-    console.log(this.props);
     return(
       <div>
         <h5>Search Ps station:</h5>
@@ -82,7 +84,9 @@ class Homed extends Component {
             <Button type = "submit" className = "offset-1 col-2" >Search</Button>
           </FormGroup>
         </Form>
-        {this.displayResults() }
+        <div>
+          <ListDisplay list = {this.state.searchData} />
+        </div>
       </div>
     );
   }
