@@ -8,8 +8,30 @@ class Homed extends Component {
     super(props);
     this.findplaceholder = this.findplaceholder.bind(this);
     this.displayResults = this.displayResults.bind(this);
+    this.fetchResults = this.fetchResults.bind(this);
   }
   
+  fetchResults = async() => {
+    try {
+      const query = this.props.location.search.split('=')[1];
+      const response = await axios({
+        url: '/api/' + window.localStorage.getItem("stationNo") + '/search?name=' + query,
+        method: 'get'
+      });
+      if(response.status === 200) {
+        return response;
+      }
+      else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    }
+    catch(error) {
+      alert("could not fetch search results.\nError: "+ error.message);
+    }
+  }
+
   findplaceholder = () => {
     if( this.props.location.search !== "") {
       return this.props.location.search.split("=")[1];
@@ -21,10 +43,20 @@ class Homed extends Component {
 
   displayResults = () => {
     if(this.props.location.search !== "") {
+      const results = this.fetchResults();
+      let list = results.map((item) => item.name);
       return(
         <div className = "row-content">
           <h2>Search results :</h2>
-
+          <ul className = "list-unstyled">
+            {  
+              list.map((item) => {
+                return(
+                  <li>{item}</li>
+                );
+              })
+            }
+          </ul>
         </div>
       );
     }
