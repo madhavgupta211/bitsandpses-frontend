@@ -1,3 +1,22 @@
 .row-content {
     padding: 100px 0px;
 }
+
+.heading { 
+    padding-bottom: 30px;
+}
+
+.sub-heading {
+    color: white;
+    background-color: rgb(47, 48, 49);
+    padding: 5px 0px;
+}
+
+.cg-card {
+    height: 225px !important;
+    margin-bottom: 20px;
+}
+
+.discussion-container {
+    background-color: rgb(228, 228, 228);
+}
