@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Form, FormGroup, Input, Button } from 'reactstrap';
 import "./homed.css";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function ListDisplay ({list}) {
   if(list === null) {
@@ -15,7 +16,7 @@ function ListDisplay ({list}) {
         {
           list.map((item) => {
             return(
-              <li>{item.station.name}</li>
+              <li><Link to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.station.slug} >{item.station.name}</Link></li>
             );
           })
         }
@@ -29,7 +30,8 @@ class Homed extends Component {
     super(props);
     this.findplaceholder = this.findplaceholder.bind(this);
     this.state = {
-      searchData: null
+      searchData: null,
+      foundResults: false
     }
   }
   
@@ -41,7 +43,6 @@ class Homed extends Component {
         if(response.ok)
         {
           const json = await response.json();
-          console.log(json);
           this.setState({
             searchData: json
           });

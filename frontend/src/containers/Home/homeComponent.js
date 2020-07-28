@@ -4,6 +4,7 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 import NotFound from '../NotFound/notfoundComponent';
 import Header from './Header/headerComponent';
 import Homed from './Homed/homedComponent';
+import StationDisplay from './StationDetails/stationDisplayComponent';
 
 class Home extends Component {
   constructor(props) {
@@ -19,6 +20,7 @@ class Home extends Component {
           <Header urlinfo = {this.props.match} />
           <Switch>
             <Route path = {this.props.match.url + '/home' } component = {Homed} />
+            <Route path = {this.props.match.url + '/station/:stationName'} component = {StationDisplay}/>
             <Redirect to = {this.props.match.url + '/home'} />
           </Switch>
         </div>
