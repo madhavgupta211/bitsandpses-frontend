@@ -80,3 +80,4 @@ yarn.lock
 # Add any unwanted files here
 config/
 data/
+.eslintrc.json
