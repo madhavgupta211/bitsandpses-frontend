@@ -12,23 +12,26 @@ const stationSchema = new mongoose.Schema({
   category: {
     type: { type: String, enum: ['ps1', 'ps2'] }
   },
+  field: {
+    type: { type: String, enum: ['IT', 'Finance', 'Core'] }
+  },
   location: {
     type: String
   },
   cg: {
     pilani: {
       type: Number,
-      min: 3,
+      min: 0,
       max: 10
     },
     goa: {
       type: Number,
-      min: 3,
+      min: 0,
       max: 10
     },
     hyderabad: {
       type: Number,
-      min: 3,
+      min: 0,
       max: 10
     }
   },
