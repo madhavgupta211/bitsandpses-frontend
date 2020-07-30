@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import './stationDisplay.css';
 import NotFound from '../../NotFound/notfoundComponent';
-import { Card, CardBody, CardTitle, CardText } from 'reactstrap';
+import { Card, CardBody, CardTitle, CardText, FormGroup, Form, Input, Button } from 'reactstrap';
+import axios from 'axios';
 
 function RenderComments ({list, authorlist}) {
   if(!list || list.length === 0) {
@@ -67,6 +68,7 @@ function RenderComments ({list, authorlist}) {
 class StationDisplay extends Component {
   constructor(props) {
     super(props);
+    this.handleCommentChange = this.handleCommentChange.bind(this);
     this.state = {
       stationDetails: {
         station: {
@@ -75,7 +77,8 @@ class StationDisplay extends Component {
         },
         users: []
       },
-      stationFound: true
+      stationFound: true,
+      commentField: null
     }
   }
   
@@ -105,6 +108,38 @@ class StationDisplay extends Component {
       }
     } catch(error) {
       alert("could not fetch Station Details.\nError: "+ error.message);
+    }
+  }
+
+  handleCommentChange = (e) => {
+    this.setState({
+      commentField: e.target.value
+    });
+  };
+
+  handleCommentSubmit = async(e) => {
+    e.preventDefault();
+    if(document.cookie.split(';').some((item) => item.trim().startsWith('jwt='))) {
+      const cookies = document.cookie.split('; ');
+      const value = cookies.find(item => item.startsWith('jwt')).split('=')[1];
+      console.log(value);
+      const response = await axios({
+        method: 'post',
+        url: "/api/" + window.localStorage.getItem("stationNo") + '/' + this.props.match.params.stationName + "/comment" ,
+        headers: {
+          Authorization: `Bearer ${value}`
+        },
+        data: this.state.commentField
+      });
+      if(response.ok) {
+        window.location.reload();
+      }
+      else {
+        alert('Error ' + response.status + ': ' + response.statusText);
+      }
+    }
+    else {
+      alert("you must be logged in to comment on stations.");
     }
   }
 
@@ -158,6 +193,21 @@ class StationDisplay extends Component {
               <h3 className = "col-12 sub-heading">Discussion</h3>
               <RenderComments list = {this.state.stationDetails.station.discussion} authorlist = {this.state.stationDetails.users} />
             </div>
+          </div>
+          <div class = "col-12">
+            <Form autoComplete = "off" action = {"/api/" + window.localStorage.getItem("stationNo") + '/' + this.props.match.params.stationName + "/comment"} method = "POST">
+              <FormGroup row>
+                <Input type = "text"
+                 name = "data"
+                 id = "data"
+                 className = "col-10"
+                 onChange = {this.handleCommentChange}>
+                </Input>
+                <div className = "col-2">
+                  <Button onSubmit = {this.handleCommentSubmit} type = "submit">Post Comment</Button>
+                </div>
+              </FormGroup>
+            </Form>  
           </div>
         </div>
       );
