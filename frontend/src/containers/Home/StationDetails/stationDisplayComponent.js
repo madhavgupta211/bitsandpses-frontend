@@ -69,6 +69,7 @@ class StationDisplay extends Component {
   constructor(props) {
     super(props);
     this.handleCommentChange = this.handleCommentChange.bind(this);
+    this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     this.state = {
       stationDetails: {
         station: {
@@ -111,13 +112,14 @@ class StationDisplay extends Component {
     }
   }
 
-  handleCommentChange = (e) => {
+  handleCommentChange = (event) => {
     this.setState({
-      commentField: e.target.value
+      commentField: event.target.value
     });
+    console.log(this.state.commentField);
   };
 
-  handleCommentSubmit = async(e) => {
+  handleCommentSubmit = async e => {
     e.preventDefault();
     if(document.cookie.split(';').some((item) => item.trim().startsWith('jwt='))) {
       const cookies = document.cookie.split('; ');
@@ -129,9 +131,11 @@ class StationDisplay extends Component {
         headers: {
           Authorization: `Bearer ${value}`
         },
-        data: this.state.commentField
+        data: {
+          data: this.state.commentField
+        }
       });
-      if(response.ok) {
+      if(response.status === 200) {
         window.location.reload();
       }
       else {
@@ -195,16 +199,16 @@ class StationDisplay extends Component {
             </div>
           </div>
           <div class = "col-12">
-            <Form autoComplete = "off" action = {"/api/" + window.localStorage.getItem("stationNo") + '/' + this.props.match.params.stationName + "/comment"} method = "POST">
+            <Form autoComplete = "off">
               <FormGroup row>
                 <Input type = "text"
                  name = "data"
                  id = "data"
                  className = "col-10"
-                 onChange = {this.handleCommentChange}>
+                 onChange = {(event) => {this.handleCommentChange(event) }}>
                 </Input>
                 <div className = "col-2">
-                  <Button onSubmit = {this.handleCommentSubmit} type = "submit">Post Comment</Button>
+                  <Button onClick = {(event) =>{this.handleCommentSubmit(event)}} type = "submit">Post Comment</Button>
                 </div>
               </FormGroup>
             </Form>  

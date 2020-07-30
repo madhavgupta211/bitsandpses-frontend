@@ -38,6 +38,8 @@ router.get('/api/2', async (req, res) => {
 router.post('/api/2/:station/comment', auth, async (req, res) => {
   const station = await Station.findOne({ category: { type: 'ps2' }, slug: req.params.station });
 
+  console.log(req.body);
+
   if (!station) {
     return res.status(404).send('Station not found');
   }
