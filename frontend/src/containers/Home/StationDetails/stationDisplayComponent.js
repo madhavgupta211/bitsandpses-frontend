@@ -5,6 +5,7 @@ import { Card, CardBody, CardTitle, CardText, FormGroup, Form, Input, Button, Ca
 import axios from 'axios';
 import RenderComment from './renderCommentsComponent/renderComments';
 import { withRouter } from 'react-router-dom';
+import SearchBar from '../SearchNavbar/searchNavComponent';
 
 function RenderComments ({list, authorlist, stationName}) {
   if(!list || list.length === 0) {
@@ -128,68 +129,71 @@ class StationDisplay extends Component {
     console.log(this.state.stationDetails.users);
     if(this.state.stationFound === true) {
       return(
-        <div className = "container">
-          <h1 className = "col-12 text-center heading">{this.state.stationDetails.station.name}</h1>
-          <h4 className = "col-12 text-center heading">Delhi, India</h4>
-          <div className = "col-12" >
-            <div className = "row text-center">
-              <h3 className = "col-12 sub-heading">CGPA cutoffs for respective campuses</h3>
-            </div>
-            <div className = "row mt-3">
-              <div className = "col-4">
-                <Card className = "cg-card">
-                  <CardBody className = "text-center d-flex align-items-center justify-content-center">
-                    <div>
-                      <CardTitle><h3>Pilani campus</h3></CardTitle>
-                      <CardText><h5>9.07</h5></CardText>
-                    </div>
-                  </CardBody>
-                </Card>
+        <div>
+          <SearchBar />
+          <div className = "container">
+            <h1 className = "col-12 text-center heading">{this.state.stationDetails.station.name}</h1>
+            <h4 className = "col-12 text-center heading">Delhi, India</h4>
+            <div className = "col-12" >
+              <div className = "row text-center">
+                <h3 className = "col-12 sub-heading">CGPA cutoffs for respective campuses</h3>
               </div>
-              <div className = "col-4">
-                <Card className = "cg-card">
-                  <CardBody className = "text-center d-flex align-items-center justify-content-center">
-                    <div>
-                      <CardTitle><h3>Goa campus</h3></CardTitle>
-                      <CardText><h5>8.34</h5></CardText>
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
-              <div className = "col-4">
-                <Card className = "cg-card">
-                  <CardBody className = "text-center d-flex align-items-center justify-content-center">
-                    <div>
-                      <CardTitle><h3>Hyderabad campus</h3></CardTitle>
-                      <CardText><h5>7.58</h5></CardText>
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
-            </div>
-          </div>
-          <div className = "col-12">
-            <div className = "row text-center">
-              <h3 className = "col-12 sub-heading">Discussion</h3>
-              <RenderComments list = {this.state.stationDetails.station.discussion} 
-               authorlist = {this.state.stationDetails.users}
-               stationName = {this.props.match.params.stationName} />
-            </div>
-          </div>
-          <div class = "col-12">
-            <Form autoComplete = "off">
-              <FormGroup row>
-                <Input type = "text"
-                 name = "data"
-                 id = "data"
-                 className = "col-10"
-                 onChange = {(event) => {this.handleCommentChange(event) }}>
-                </Input>
-                <div className = "col-2">
-                  <Button onClick = {(event) =>{this.handleCommentSubmit(event)}} type = "submit">Post Comment</Button>
+              <div className = "row mt-3">
+                <div className = "col-4">
+                  <Card className = "cg-card">
+                    <CardBody className = "text-center d-flex align-items-center justify-content-center">
+                      <div>
+                        <CardTitle><h3>Pilani campus</h3></CardTitle>
+                        <CardText><h5>9.07</h5></CardText>
+                      </div>
+                    </CardBody>
+                  </Card>
                 </div>
-              </FormGroup>
-            </Form>  
+                <div className = "col-4">
+                  <Card className = "cg-card">
+                    <CardBody className = "text-center d-flex align-items-center justify-content-center">
+                      <div>
+                        <CardTitle><h3>Goa campus</h3></CardTitle>
+                        <CardText><h5>8.34</h5></CardText>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </div>
+                <div className = "col-4">
+                  <Card className = "cg-card">
+                    <CardBody className = "text-center d-flex align-items-center justify-content-center">
+                      <div>
+                        <CardTitle><h3>Hyderabad campus</h3></CardTitle>
+                        <CardText><h5>7.58</h5></CardText>
+                      </div>
+                    </CardBody>
+                  </Card>
+                </div>
+              </div>
+            </div>
+            <div className = "col-12">
+              <div className = "row text-center">
+                <h3 className = "col-12 sub-heading">Discussion</h3>
+                <RenderComments list = {this.state.stationDetails.station.discussion} 
+                authorlist = {this.state.stationDetails.users}
+                stationName = {this.props.match.params.stationName} />
+              </div>
+            </div>
+            <div class = "col-12">
+              <Form autoComplete = "off">
+                <FormGroup row>
+                  <Input type = "text"
+                  name = "data"
+                  id = "data"
+                  className = "col-10"
+                  onChange = {(event) => {this.handleCommentChange(event) }}>
+                  </Input>
+                  <div className = "col-2">
+                    <Button onClick = {(event) =>{this.handleCommentSubmit(event)}} type = "submit">Post Comment</Button>
+                  </div>
+                </FormGroup>
+              </Form>  
+            </div>
           </div>
         </div>
       );
