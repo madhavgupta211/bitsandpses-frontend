@@ -1,13 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import './stationDisplay.css';
 import NotFound from '../../NotFound/notfoundComponent';
-import { Card, CardBody, CardTitle, CardText, FormGroup, Form, Input, Button } from 'reactstrap';
+import { Card, CardBody, CardTitle, CardText, FormGroup, Form, Input, Button, CardFooter } from 'reactstrap';
 import axios from 'axios';
+import RenderComment from './renderCommentsComponent/renderComments';
+import { withRouter } from 'react-router-dom';
 
-function RenderComments ({list, authorlist}) {
+function RenderComments ({list, authorlist, stationName}) {
   if(!list || list.length === 0) {
     return(
-      <div />
+      <div className = "col-12 discussion-container">
+        <h4 className = "m-4">No comments</h4>
+      </div>
     );
   }
   
@@ -23,44 +27,16 @@ function RenderComments ({list, authorlist}) {
   else {
     return(
       <div className = "col-12 discussion-container">
-        
-          {list.map((comment) => {
-              function matchid (author) {
-                return comment.comment.user === author._id;
-              }
-              const author = authorlist.find(matchid);
-              const authorName = author.name;
-              return(
-                <div key = {comment._id}>
-                  <Card className = "col-8 my-4">
-                    <CardBody>
-                      <CardTitle className = "text-left">{authorName}</CardTitle>
-                      <CardText className = "text-left">{comment.comment.data}</CardText>
-                    </CardBody>
-                  </Card>
-                  <div className = "col-4" />
-                  { comment.comment.replies.map((reply) => {
-                      function matchreply (author) {
-                        return reply.user === author._id;
-                      }
-                      const repauthor = authorlist.find(matchreply);
-                      const repauthorName = repauthor.name;
-                      return(
-                        <div key = {reply._id}>
-                          <Card className = "col-8 offset-1 my-4">
-                            <CardBody>
-                              <CardTitle className = "text-left">{repauthorName}</CardTitle>
-                              <CardText className = "text-left">{reply.data}</CardText>
-                            </CardBody>
-                          </Card>
-                          <div className = "col-3" />
-                        </div>
-                      );
-                    })}
-                </div>
-              );
-            })}
-        </div>
+        { list.map((comment) => {
+          return(
+            <RenderComment 
+            key = {comment._id} 
+            comment = {comment} 
+            authorlist = {authorlist}
+            stationName = {stationName} />
+          );
+        })}    
+      </div>
     );
   }
 };
@@ -195,7 +171,9 @@ class StationDisplay extends Component {
           <div className = "col-12">
             <div className = "row text-center">
               <h3 className = "col-12 sub-heading">Discussion</h3>
-              <RenderComments list = {this.state.stationDetails.station.discussion} authorlist = {this.state.stationDetails.users} />
+              <RenderComments list = {this.state.stationDetails.station.discussion} 
+               authorlist = {this.state.stationDetails.users}
+               stationName = {this.props.match.params.stationName} />
             </div>
           </div>
           <div class = "col-12">
@@ -224,4 +202,4 @@ class StationDisplay extends Component {
   };
 };
 
-export default StationDisplay;
+export default withRouter(StationDisplay);
