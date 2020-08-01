@@ -1,29 +1,25 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavItem, FormGroup, Form, Input, Button } from 'reactstrap';
+import { FormGroup, Input, Button, Row } from 'reactstrap';
 import "./searchNav.css";
 import { Redirect } from 'react-router-dom';
+import { LocalForm , Errors, Control } from 'react-redux-form';
+
+const minLength = (len) => (val) => val && (val.length >= len);
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      searchField: null,
-      router: false
+      router: false,
+      searchField: null
     };
-    this.handleSearch = this.handleSearch.bind(this);
     this.preventSearch = this.preventSearch.bind(this);
   }
-  
-  handleSearch = (event) => {
-    this.setState({
-      searchField: event.target.value
-    });
-  }
 
-  preventSearch = (event) => {
-    event.preventDefault();
+  preventSearch = (values) => {
     this.setState({
-      router: true
+      router: true,
+      searchField: values.search
     });
   }
   
@@ -31,17 +27,29 @@ class SearchBar extends Component {
     return(
       <div className = "row row-search align-items-center">
         <div className = "col-8 offset-2 justify-content-center">
-          <Form>
-            <FormGroup row>
-              <Input type = "text"
-               className = "col-8 offset-1"
-               onChange = {(event) => { this.handleSearch(event) } } />
-               &nbsp;
-              <Button onClick = { (event) => { this.preventSearch(event) } } 
+          <LocalForm onSubmit = { (values) => { this.preventSearch(values) } }>
+            <Row className = "form-group">
+              <div className = "col-8 offset-1">
+                <Control.text
+                model = ".search"
+                name = "search"
+                id = "search"
+                placeholder = "Search for station"
+                className = "col-12 form-control"
+                validators = { { minLength: minLength(1)} } />
+                &nbsp;
+                <Errors className = "col-12 text-success text-left"
+                 model = ".search"
+                 show = "touched"
+                 messages = {{
+                   minLength: 'Search field is empty'
+                 }} />
+              </div>
+              <Button 
                type = "submit" 
-               className = "btn btn-success col-2">Search</Button>
-            </FormGroup>
-          </Form>
+               className = "btn btn-success col-2 align-self-start">Search</Button>
+            </Row>
+          </LocalForm>
           { this.state.router ? 
             <Redirect to = { "/" + window.localStorage.getItem("stationNo") + "/home?Search=" + this.state.searchField } />
           : null}
