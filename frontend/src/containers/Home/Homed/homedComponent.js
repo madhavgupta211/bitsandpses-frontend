@@ -29,9 +29,12 @@ class Homed extends Component {
   constructor(props) {
     super(props);
     this.findplaceholder = this.findplaceholder.bind(this);
+    this.handleEmptytype = this.handleEmptytype.bind(this);
     this.state = {
       searchData: null,
-      foundResults: false
+      foundResults: false,
+      topData: null,
+      searchField: ""
     }
   }
   
@@ -71,6 +74,18 @@ class Homed extends Component {
     }
   };
 
+  handleEmptytype = (event) => {
+    if(this.state.searchField === null || this.state.searchField === "") {
+      event.preventDefault();
+    }
+  }
+
+  storeSearch = (event) => {
+    this.setState({
+      searchField: event.target.value
+    });
+  }
+
   render() {
     return(
       <div>
@@ -81,8 +96,9 @@ class Homed extends Component {
              name = "Search"
              defaultValue = { this.findplaceholder() }
              placeholder = "Search"
-             className = "col-5 offset-2" />
-            <Button type = "submit" className = "offset-1 col-2" >Search</Button>
+             className = "col-5 offset-2"
+             onChange = { (event) => {this.storeSearch(event)}} />
+            <Button onClick = {(event) => { this.handleEmptytype(event) }} type = "submit" className = "offset-1 col-2" >Search</Button>
           </FormGroup>
         </Form>
         <div>
