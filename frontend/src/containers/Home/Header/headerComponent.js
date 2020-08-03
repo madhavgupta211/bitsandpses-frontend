@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, NavbarBrand, Nav, NavItem, Input, Button, Form, FormGroup } from 'reactstrap';
+import { Navbar, NavbarBrand, Nav, NavItem, Input, Button, Form, FormGroup, NavbarToggler, Collapse } from 'reactstrap';
 import { NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
 import './header.css';
@@ -13,19 +13,26 @@ class Header extends Component {
     this.displayStationButton = this.displayStationButton.bind(this);
     this.state = {
       userLoggedin: true,
+      isNavOpen: false
     };
   }
 
-  displayStationButton = (num) => {
+  toggleNav = () => {
+    this.setState({
+      isNavOpen: !this.state.isNavOpen
+    });
+  }
+  
+  displayStationButton = (num,color) => {
     if(parseInt(window.localStorage.getItem("stationNo")) === num)
     {
       return(
-        <Button className = "btn" disabled>PS{num}</Button>
+        <Button className = { "toggle-head-" + color } >PS{num}</Button>
       );
     }
     else {
       return(
-        <Link to = { '/' + num + '/home' } className = "btn btn-primary">PS{num}</Link>
+        <Link to = { '/' + num + '/home' } className = "btn toggle-head-grey">PS{num}</Link>
       );
     }
   }
@@ -59,43 +66,65 @@ class Header extends Component {
     }; 
   };
   
-  loginHandle = () => {
+  loginHandle = ({color}) => {
     if (document.cookie.split(';').some((item) => item.trim().startsWith('jwt='))) {
       window.sessionStorage.setItem("loggedin","1");
     }
     if(window.sessionStorage.getItem("loggedin") === "1")
     {
       return(
-        <Button className = "btn btn-secondary" onClick = {this.handlelogout}>Logout</Button>  
+        <Button className = {"btn nav-linker-" + color} onClick = {this.handlelogout}>LOGOUT</Button>  
       );
     }
     else {
+      console.log(color);
       return(
-        <a href = "/auth/google" className = "btn btn-primary">Login</a>
+        <a href = "/auth/google" className = {"nav-linker-" + color}>LOGIN</a>
       );
     }
   };
   
   render() {
+    let stationChoice = window.localStorage.getItem("stationNo");
+    let color = null;
+    if(stationChoice === "1") {
+      color = "green";
+    }
+    else if(stationChoice === "2") {
+      color = "blue";
+    }
     return(
-      <Navbar light>
-        <NavbarBrand><NavLink to = {this.props.urlinfo.url + '/home'} >Ps Website</NavLink></NavbarBrand>
-        <Nav Navbar>
-          <NavItem className = "m-2">
-            <NavLink className = "btn btn-primary" to = {this.props.urlinfo.url + '/home'} >Home</NavLink>
-          </NavItem>
-          <NavItem className = "m-2">
-            <NavLink className = "btn btn-primary" to = {this.props.urlinfo.url + '/contact'}>Contact Us</NavLink>
-          </NavItem>
-          <NavItem className = "m-2">
-            <this.loginHandle />
-          </NavItem>
-          <NavItem className = "m-2">
-            {this.displayStationButton(1)}
-            &nbsp;
-            {this.displayStationButton(2)}
-          </NavItem>
-        </Nav>
+      <Navbar light className = "white-bg-navbar" expand = "md">
+        <div className = "container">
+          <NavbarBrand className = "mr-auto"><NavLink to = {this.props.urlinfo.url + '/home'} className = "text-decoration-none" >
+            <h1 className = "navbrand-title">  
+              <span className = "green">BITS</span>
+              <span className = "dark-grey">and</span>
+              <span className = "blue">PS</span>
+              <span className = "dark-grey">es</span>  
+            </h1>
+          </NavLink></NavbarBrand>
+            <div className = "m-2 ml-auto toggler-background">
+              {this.displayStationButton(1,color)}
+              &nbsp;
+              {this.displayStationButton(2,color)}
+            </div>
+            <NavbarToggler onClick = {this.toggleNav} className = "nav-toggler" />
+            <Collapse isOpen = {this.state.isNavOpen} navbar className="flex-grow-0">
+              <Nav navbar>
+                <NavItem className = "d-flex align-items-center nav-items">
+                  <NavLink className = {"nav-linker-" + color} to = {this.props.urlinfo.url + '/home'} >HOME</NavLink>
+                </NavItem>
+                <NavItem className = "d-flex align-items-center nav-items">
+                  <NavLink className = {"nav-linker-" + color} to = {this.props.urlinfo.url + '/contact'}>CONTACT US</NavLink>
+                </NavItem>
+                <NavItem className = "d-flex align-items-center nav-items">
+                  <this.loginHandle color = {color}/>
+                </NavItem>
+              </Nav>
+            </Collapse>
+            
+        </div>
       </Navbar>
     );
   }

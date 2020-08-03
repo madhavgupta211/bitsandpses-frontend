@@ -28,7 +28,7 @@ function Choose () {
           </div>
           <div className = "chooser-buttons row justify-content-center">
             <Link className = "btn green-bg chooser-button align-self-center" to = { '/' + 1 }>
-              <div className = "d-none d-lg-block large-button-cont">
+              <div className = "d-none d-lg-block align-items-center large-button-cont">
                 <h3 className = "large-button-title">
                   PS1
                 </h3>
