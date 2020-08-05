@@ -8,7 +8,7 @@ router.get('/api/1/all', async (req, res) => {
   try {
     const stations = await Station.find(
         { category: { type: 'ps1' } },
-        'name category field location cg',
+        'name category field location cg slug',
         {
           limit: parseInt(req.query.limit),
           skip: parseInt(req.query.skip)
@@ -47,7 +47,12 @@ router.get('/api/1', async (req, res) => {
   }
 
   try {
-    const stations = await Station.find(queries).select('name category field location cg');
+    const stations = await Station.find(queries,
+      'name category field location cg slug',
+      {
+        limit: parseInt(req.query.limit),
+        skip: parseInt(req.query.skip)
+      });
 
     res.send(stations);
   } catch (e) {
