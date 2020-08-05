@@ -94,7 +94,7 @@ class Header extends Component {
       color = "blue";
     }
     return(
-      <Navbar light className = "white-bg-navbar" expand = "md">
+      <Navbar light className = "white-bg-navbar fixed-top" expand = "md">
         <div className = "container">
           <NavbarBrand className = "mr-auto"><NavLink to = {this.props.urlinfo.url + '/home'} className = "text-decoration-none" >
             <h1 className = "navbrand-title">  
@@ -112,13 +112,13 @@ class Header extends Component {
             <NavbarToggler onClick = {this.toggleNav} className = "nav-toggler" />
             <Collapse isOpen = {this.state.isNavOpen} navbar className="flex-grow-0">
               <Nav navbar>
-                <NavItem className = "d-flex align-items-center nav-items">
+                <NavItem className = "d-flex align-items-center nav-items my-3 my-md-0">
                   <NavLink className = {"nav-linker-" + color} to = {this.props.urlinfo.url + '/home'} >HOME</NavLink>
                 </NavItem>
-                <NavItem className = "d-flex align-items-center nav-items">
+                <NavItem className = "d-flex align-items-center nav-items my-3 my-md-0">
                   <NavLink className = {"nav-linker-" + color} to = {this.props.urlinfo.url + '/contact'}>CONTACT US</NavLink>
                 </NavItem>
-                <NavItem className = "d-flex align-items-center nav-items">
+                <NavItem className = "d-flex align-items-center nav-items my-3 my-md-0">
                   <this.loginHandle color = {color}/>
                 </NavItem>
               </Nav>
