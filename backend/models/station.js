@@ -6,8 +6,7 @@ const stationSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    trim: true,
-    text: true
+    trim: true
   },
   category: {
     type: { type: String, enum: ['ps1', 'ps2'] }

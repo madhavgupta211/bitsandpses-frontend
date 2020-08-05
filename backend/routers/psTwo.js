@@ -32,17 +32,30 @@ router.get('/api/2/:station', async (req, res) => {
   }
 });
 
-// search the stations by name for ps2
+/// search the stations by name for ps2
 router.get('/api/2', async (req, res) => {
+  queries = {
+    category: { type: 'ps2'}
+  }
+
+  if (req.query.name) {
+    queries.name = { $regex: new RegExp(req.query.name, 'i') }
+  }
+
+  if (req.query.location) {
+    queries.location = { $regex: new RegExp(req.query.location, 'i') }
+  }
+
   try {
-    let stations = await Station.find({
-      $text: { $search: req.query.name },
-      category: { type: 'ps2' }
-    }).select('name category field location cg slug');
+    const stations = await Station.find(queries,
+      'name category field location cg',
+      {
+        limit: parseInt(req.query.limit),
+        skip: parseInt(req.query.skip)
+      });
 
     res.send(stations);
   } catch (e) {
-    console.log(e);
     res.status(400).send(e);
   }
 });

@@ -34,15 +34,23 @@ router.get('/api/1/:station', async (req, res) => {
 
 // search the stations by name for ps1
 router.get('/api/1', async (req, res) => {
+  queries = {
+    category: { type: 'ps1'}
+  }
+
+  if (req.query.name) {
+    queries.name = { $regex: new RegExp(req.query.name, 'i') }
+  }
+
+  if (req.query.location) {
+    queries.location = { $regex: new RegExp(req.query.location, 'i') }
+  }
+
   try {
-    let stations = await Station.find({
-      $text: { $search: req.query.name },
-      category: { type: 'ps1' }
-    }).select('name category field location cg');
+    const stations = await Station.find(queries).select('name category field location cg');
 
     res.send(stations);
   } catch (e) {
-    console.log(e);
     res.status(400).send(e);
   }
 });
