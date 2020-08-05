@@ -6,7 +6,14 @@ const Station = require('../models/station');
 // get all stations of ps2
 router.get('/api/2/all', async (req, res) => {
   try {
-    const stations = await Station.find({ category: { type: 'ps2' } });
+    const stations = await Station.find(
+        { category: { type: 'ps2' } },
+        'name category field location cg',
+        {
+          limit: parseInt(req.query.limit),
+          skip: parseInt(req.query.skip)
+        }
+      );
     res.send(stations);
   } catch (e) {
     res.status(400).send(e);
