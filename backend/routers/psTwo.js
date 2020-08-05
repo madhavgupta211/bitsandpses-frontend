@@ -31,9 +31,7 @@ router.get('/api/2', async (req, res) => {
     let stations = await Station.find({
       $text: { $search: req.query.name },
       category: { type: 'ps2' }
-    });
-
-    stations = await Promise.all(stations.map(async (station) => await station.allData()));
+    }).select('name category field location cg slug');
 
     res.send(stations);
   } catch (e) {
