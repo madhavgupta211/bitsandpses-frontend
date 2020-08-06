@@ -4,14 +4,18 @@ import "./homed.css";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-function ListDisplay ({list,title,color}) {
+function ListDisplay ({list,title,color,displayLoader}) {
   console.log(title);
+  let loadStyle = "";
   if(list === null) {
     return(
       <div />
     );
   }
   else {
+    if( !displayLoader ) {
+      loadStyle = "d-none";
+    }
     return(
       <div>
         <h1 className = { "result-title-" + color }>{title}</h1>
@@ -24,6 +28,7 @@ function ListDisplay ({list,title,color}) {
             })
           }
         </ul>
+        <Button className = { loadStyle }>Load More</Button>
       </div>
     );
   }
@@ -39,7 +44,9 @@ class Homed extends Component {
       foundResults: false,
       topData: null,
       searchField: "",
-      resultTitle: "All Stations"
+      resultTitle: "All Stations",
+      stationsDisplayed: 0,
+      shouldLoadMore: true
     }
   }
   
@@ -49,13 +56,15 @@ class Homed extends Component {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
         const sender = this.props.location.search.split("=")[2];
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query );
+        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
           this.setState({
             searchData: json,
-            resultTitle: "Search Results"
+            resultTitle: "Search Results",
+            stationsDisplayed: this.state.stationsDisplayed + json.length,
+            shouldLoadMore: ( json.length === 10 )
           });
         }
         else {
@@ -64,7 +73,7 @@ class Homed extends Component {
           throw error;
         }
       } else {
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '/all' );
+        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '/all?limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -165,7 +174,11 @@ class Homed extends Component {
             </div>
             <div className = "col-6 offset-1 results-box">
               <div>
-                <ListDisplay list = {this.state.searchData} title = {this.state.resultTitle} color = {color} />
+                <ListDisplay 
+                 list = {this.state.searchData} 
+                 title = {this.state.resultTitle} 
+                 color = {color}
+                 displayLoader = {this.state.shouldLoadMore} />
               </div>
             </div>
           </div>
