@@ -99,11 +99,11 @@
     background-color: #ccc5b9 !important;
     border-width: 0px !important;
     font-family: 'Ubuntu', serif !important;
-    font-weight: 500 !important;
-    color: #252422 !important;
+    font-weight: 400 !important;
+    color: #403D39 !important;
     height: 40px !important;
     width: 90% !important;
-    max-width: 100px !important;
+    max-width: 200px !important;
 }
 
 .filter-heading {
@@ -112,8 +112,24 @@
     padding: 1vw 2vh;
 }
 
+.result-title-green {
+    font-family: 'Bree Serif', serif;
+    color: #2A9134;
+    padding: 1vw 2vh;
+    border-bottom: 2px ridge;
+}
+
+.result-title-blue {
+    font-family: 'Bree Serif', serif;
+    color: #0353A4;
+    padding: 1vw 2vh;
+    border-color: #ccc5b9 !important;
+    border-bottom: 1px ridge;
+}
+
 .results-box {
     background-color: white;
     border-radius: 30px;
     box-shadow: 0px 8px 23px -6px rgba(0,0,0,0.75);
 }
+

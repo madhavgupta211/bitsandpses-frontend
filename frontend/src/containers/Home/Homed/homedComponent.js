@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Form, FormGroup, Input, Button } from 'reactstrap';
+import { Form, FormGroup, Input, Button, Label } from 'reactstrap';
 import "./homed.css";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-function ListDisplay ({list}) {
-  console.log(list);
+function ListDisplay ({list,title,color}) {
+  console.log(title);
   if(list === null) {
     return(
       <div />
@@ -13,15 +13,18 @@ function ListDisplay ({list}) {
   }
   else {
     return(
-      <ul className = "list-unstyled">
-        {
-          list.map((item) => {
-            return(
-              <li><Link to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.slug} >{item.name}</Link></li>
-            );
-          })
-        }
-      </ul>
+      <div>
+        <h1 className = { "result-title-" + color }>{title}</h1>
+        <ul className = "list-unstyled">
+          {
+            list.map((item) => {
+              return(
+                <li><Link to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.slug} >{item.name}</Link></li>
+              );
+            })
+          }
+        </ul>
+      </div>
     );
   }
 }
@@ -35,15 +38,33 @@ class Homed extends Component {
       searchData: null,
       foundResults: false,
       topData: null,
-      searchField: ""
+      searchField: "",
+      resultTitle: "All Stations"
     }
   }
   
   async componentDidMount() {
-    const query = this.props.location.search.split('=')[1];
+    console.log(this.props);
     try {
       if(this.props.location.search !== "") {
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?name=' + query );
+        const query = this.props.location.search.split("=")[1].split("&")[0];
+        const sender = this.props.location.search.split("=")[2];
+        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query );
+        if(response.ok)
+        {
+          const json = await response.json();
+          this.setState({
+            searchData: json,
+            resultTitle: "Search Results"
+          });
+        }
+        else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      } else {
+        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '/all' );
         if(response.ok)
         {
           const json = await response.json();
@@ -56,10 +77,6 @@ class Homed extends Component {
           error.response = response;
           throw error;
         }
-      } else {
-        this.setState({
-          searchData: null
-        })
       }
     } catch(error) {
       alert("could not fetch search results.\nError: "+ error.message);
@@ -68,7 +85,7 @@ class Homed extends Component {
 
   findplaceholder = () => {
     if( this.props.location.search !== "") {
-      return this.props.location.search.split("=")[1];
+      return this.props.location.search.split("=")[1].split("&")[0];
     }
     else {
       return null;
@@ -111,7 +128,7 @@ class Homed extends Component {
               </h6>
               <div className = "search-bar-hold">
                 <Form className = "row ">
-                  <div className = "col-12 col-md-8 offset-md-1 text-left text-md-center padding-remover">
+                  <div className = "col-12 col-md-8 offset-md-2 text-left text-md-center padding-remover">
                   <Input type = "text"
                     name = "Search"
                     defaultValue = { this.findplaceholder() }
@@ -119,8 +136,21 @@ class Homed extends Component {
                     className = "home-search-bar"
                     onChange = { (event) => {this.storeSearch(event)}} />
                   </div>
-                  <div className = "col-12 col-md-2 text-left text-md-center padding-remover">
-                    <Button className = "search-button mt-3 mt-md-0" onClick = {(event) => { this.handleEmptytype(event) }} type = "submit" >{">>>"}</Button>
+                  <div className = "col-6 col-md-4 offset-md-2 text-left text-md-left padding-remover">
+                    {/* <Button className = "search-button mt-4 mr-md-3" onClick = {(event) => { this.handleEmptytype(event) }} type = "submit" >By name</Button> */}
+                    <FormGroup check inline className = "mt-4">
+                      <Label check>
+                        <Input type = "radio" name = "searchMethod" value = "name" checked/> By Name
+                      </Label>
+                    </FormGroup>
+                    <FormGroup check inline className = "mt-4">
+                      <Label check>
+                        <Input type = "radio" name = "searchMethod" value = "location"/> By Location
+                      </Label>
+                    </FormGroup>
+                  </div>
+                  <div className = "col-6 col-md-4 text-right text-md-right padding-remover">
+                    <Button className = "search-button mt-4 ml-md-3" onClick = {(event) => { this.handleEmptytype(event) }} type = "submit" >Search</Button>
                   </div>
                 </Form>
               </div>
@@ -135,18 +165,13 @@ class Homed extends Component {
             </div>
             <div className = "col-6 offset-1 results-box">
               <div>
-                <ListDisplay list = {this.state.searchData} />
+                <ListDisplay list = {this.state.searchData} title = {this.state.resultTitle} color = {color} />
               </div>
             </div>
           </div>
         </div>
         <div className = "row row-contents d-block d-lg-none">
           <h1 className = "filter-box-small">Filters</h1>
-        </div>
-        <div className = "container">
-          <div>
-            <ListDisplay list = {this.state.searchData} />
-          </div>
         </div>
       </div>
     );
