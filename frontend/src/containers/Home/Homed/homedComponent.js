@@ -18,7 +18,14 @@ function ListDisplay ({list,title,color}) {
         <ul className = "list-unstyled">
           { list.map((item) => {
               return(
-                <li><Link to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.slug} >{item.name}</Link></li>
+                <li>
+                  <Link className = "station-linker" to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.slug} >
+                    <div className = "my-3 mx-2 station-links">
+                      <h5 className = { "text-left station-link-header-" + color }>{item.name}</h5>
+                      <h6 className = "location-station text-left">{"Location: " + item.location}</h6>
+                    </div>
+                  </Link>
+                </li>
               );
           })}
         </ul>
@@ -72,7 +79,9 @@ class Homed extends Component {
         {
           const json = await response.json();
           this.setState({
-            searchData: json
+            searchData: json,
+            stationsDisplayed: this.state.stationsDisplayed + json.length,
+            shouldLoadMore: ( json.length === 10 )
           });
         }
         else {
@@ -109,23 +118,41 @@ class Homed extends Component {
 
   loadMore = async() => {
     try {
-      const query = this.props.location.search.split("=")[1].split("&")[0];
-      const sender = this.props.location.search.split("=")[2];
-      const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
-      if(response.ok)
-      {
-        const json = await response.json();
-        this.setState({
-          searchData: [...this.state.searchData,...json],
-          resultTitle: "Search Results",
-          stationsDisplayed: this.state.stationsDisplayed + json.length,
-          shouldLoadMore: ( json.length === 10 )
-        });
-      }
-      else {
-        var error = new Error('Error ' + response.status + ': ' + response.statusText);
-        error.response = response;
-        throw error;
+      if(this.props.location.search !== "") {
+        const query = this.props.location.search.split("=")[1].split("&")[0];
+        const sender = this.props.location.search.split("=")[2];
+        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+        if(response.ok)
+        {
+          const json = await response.json();
+          this.setState({
+            searchData: [...this.state.searchData,...json],
+            resultTitle: "Search Results",
+            stationsDisplayed: this.state.stationsDisplayed + json.length,
+            shouldLoadMore: ( json.length === 10 )
+          });
+        }
+        else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
+      } else {
+        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '/all?limit=10&skip=' + this.state.stationsDisplayed );
+        if(response.ok)
+        {
+          const json = await response.json();
+          this.setState({
+            searchData: [...this.state.searchData,...json],
+            stationsDisplayed: this.state.stationsDisplayed + json.length,
+            shouldLoadMore: ( json.length === 10 )
+          });
+        }
+        else {
+          var error = new Error('Error ' + response.status + ': ' + response.statusText);
+          error.response = response;
+          throw error;
+        }
       }
     } catch(error) {
       alert("could not fetch search results.\nError: "+ error.message);
@@ -155,7 +182,7 @@ class Homed extends Component {
               We will try to find what you are looking for
               </h6>
               <div className = "search-bar-hold">
-                <Form className = "row ">
+                <Form className = "row " autoComplete = "off">
                   <div className = "col-12 col-md-8 offset-md-2 text-left text-md-center padding-remover">
                   <Input type = "text"
                     name = "Search"
@@ -166,12 +193,12 @@ class Homed extends Component {
                   </div>
                   <div className = "col-6 col-md-4 offset-md-2 text-left text-md-left padding-remover">
                     <FormGroup check inline className = "mt-4">
-                      <Label check>
+                      <Label check className = "label-font">
                         <Input type = "radio" name = "searchMethod" value = "name" checked/> By Name
                       </Label>
                     </FormGroup>
                     <FormGroup check inline className = "mt-4">
-                      <Label check>
+                      <Label check className = "label-font">
                         <Input type = "radio" name = "searchMethod" value = "location"/> By Location
                       </Label>
                     </FormGroup>
@@ -190,7 +217,7 @@ class Homed extends Component {
               <h1 className = "text-left filter-heading">Filters<br /><br /><br /><br /><br />
               </h1>
             </div>
-            <div className = "col-6 offset-1 results-box">
+            <div className = "col-6 offset-1 results-box mb-4">
               <div>
                 <ListDisplay 
                  list = {this.state.searchData} 
@@ -199,13 +226,34 @@ class Homed extends Component {
                 />
               </div>
               { this.state.shouldLoadMore ? 
-                <Button onClick = { this.loadMore } className = "mb-3">Load More</Button> 
+                <Button color = "link outline-none" onClick = { this.loadMore } className = "btn mb-1 load-more"><h5>LOAD MORE</h5></Button> 
               : null}
             </div>
           </div>
         </div>
         <div className = "row row-contents d-block d-lg-none">
-          <h1 className = "filter-box-small">Filters</h1>
+          <div className = "filter-box-small">
+            <h2 className = "filter-heading pt-2">Filters</h2>
+            <br/>
+            <h5 className = "filter-heading">To be added soon!</h5>
+            <br />
+          </div>
+        </div>
+        <div className = "container">
+          <div className = "justify-content-center row row-contents d-flex d-lg-none">
+            <div className = "col-11 results-box mb-4">
+              <div>
+                <ListDisplay 
+                  list = {this.state.searchData} 
+                  title = {this.state.resultTitle} 
+                  color = {color}
+                />
+              </div>
+              { this.state.shouldLoadMore ? 
+                <Button color = "link outline-none" onClick = { this.loadMore } className = "btn mb-1 load-more"><h5>LOAD MORE</h5></Button> 
+              : null}
+            </div>
+          </div>
         </div>
       </div>
     );
