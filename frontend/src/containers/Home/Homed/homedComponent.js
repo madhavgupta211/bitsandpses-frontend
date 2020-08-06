@@ -4,31 +4,24 @@ import "./homed.css";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 
-function ListDisplay ({list,title,color,displayLoader}) {
-  console.log(title);
-  let loadStyle = "";
+function ListDisplay ({list,title,color}) {
+  console.log(list);
   if(list === null) {
     return(
       <div />
     );
   }
   else {
-    if( !displayLoader ) {
-      loadStyle = "d-none";
-    }
     return(
       <div>
         <h1 className = { "result-title-" + color }>{title}</h1>
         <ul className = "list-unstyled">
-          {
-            list.map((item) => {
+          { list.map((item) => {
               return(
                 <li><Link to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.slug} >{item.name}</Link></li>
               );
-            })
-          }
+          })}
         </ul>
-        <Button className = { loadStyle }>Load More</Button>
       </div>
     );
   }
@@ -39,6 +32,7 @@ class Homed extends Component {
     super(props);
     this.findplaceholder = this.findplaceholder.bind(this);
     this.handleEmptytype = this.handleEmptytype.bind(this);
+    this.loadMore = this.loadMore.bind(this);
     this.state = {
       searchData: null,
       foundResults: false,
@@ -113,6 +107,31 @@ class Homed extends Component {
     });
   }
 
+  loadMore = async() => {
+    try {
+      const query = this.props.location.search.split("=")[1].split("&")[0];
+      const sender = this.props.location.search.split("=")[2];
+      const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+      if(response.ok)
+      {
+        const json = await response.json();
+        this.setState({
+          searchData: [...this.state.searchData,...json],
+          resultTitle: "Search Results",
+          stationsDisplayed: this.state.stationsDisplayed + json.length,
+          shouldLoadMore: ( json.length === 10 )
+        });
+      }
+      else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        throw error;
+      }
+    } catch(error) {
+      alert("could not fetch search results.\nError: "+ error.message);
+    }
+  }
+
   render() {
     let stationChoice = window.localStorage.getItem("stationNo");
     let color = null;
@@ -146,7 +165,6 @@ class Homed extends Component {
                     onChange = { (event) => {this.storeSearch(event)}} />
                   </div>
                   <div className = "col-6 col-md-4 offset-md-2 text-left text-md-left padding-remover">
-                    {/* <Button className = "search-button mt-4 mr-md-3" onClick = {(event) => { this.handleEmptytype(event) }} type = "submit" >By name</Button> */}
                     <FormGroup check inline className = "mt-4">
                       <Label check>
                         <Input type = "radio" name = "searchMethod" value = "name" checked/> By Name
@@ -178,8 +196,11 @@ class Homed extends Component {
                  list = {this.state.searchData} 
                  title = {this.state.resultTitle} 
                  color = {color}
-                 displayLoader = {this.state.shouldLoadMore} />
+                />
               </div>
+              { this.state.shouldLoadMore ? 
+                <Button onClick = { this.loadMore } className = "mb-3">Load More</Button> 
+              : null}
             </div>
           </div>
         </div>
