@@ -7,7 +7,7 @@
     "start": "node backend/index.js",
     "dev": "env-cmd -f config/dev.env nodemon backend/index.js",
     "test": "jest",
-    "heroku-postbuild": "cd frontend && npm && npm run build"
+    "heroku-postbuild": "cd frontend && npm i && npm run build"
   },
   "repository": {
     "type": "git",
