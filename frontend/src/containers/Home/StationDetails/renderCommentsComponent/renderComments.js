@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { Card, CardBody, CardTitle, CardText, Button, Input, Form, FormGroup } from 'reactstrap';
 import axios from 'axios';
+import "./renderComments.css";
 
 class RenderComment extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class RenderComment extends Component {
 
   handleReplySubmit = async(event) => {
     event.preventDefault();
+    alert(this.state.replyField);
     if(document.cookie.split(';').some((item) => item.trim().startsWith('jwt='))) {
       const cookies = document.cookie.split('; ');
       const value = cookies.find(item => item.startsWith('jwt')).split('=')[1];
@@ -60,17 +62,25 @@ class RenderComment extends Component {
   render() {
     const author = this.props.authorlist.find(this.matchid);
     const authorName = author.name;
+    let stationChoice = window.localStorage.getItem("stationNo");
+    let color = null;
+    if(stationChoice === "1") {
+      color = "green";
+    }
+    else if(stationChoice === "2") {
+      color = "blue";
+    }
     return(
       <div>
-        <Card className = "col-8 my-4">
-          <CardBody>
-            <CardTitle className = "text-left">{authorName}</CardTitle>
-            <CardText className = "text-left">{this.props.comment.comment.data}</CardText>
-            <CardText className = "text-right">
-              <Button className="btn btn-success" onClick = {() => { this.handleReplier(true)} }>Reply</Button>
-            </CardText>
-          </CardBody>
-        </Card>
+        <div className = "col-10 col-md-9 col-lg-8">
+          <Card className = "mt-2 mb-1 comment-box">  
+            <CardTitle className = { "mb-1 mt-1 ml-3 text-left author-name-" + color } >{authorName}</CardTitle>
+            <CardText className = "ml-3 mb-2 text-left comment-content">{this.props.comment.comment.data}</CardText>
+          </Card>
+          <div className = "text-right">
+            <Button className="btn btn-link reply-button" onClick = {() => { this.handleReplier(true)} }>Reply</Button>
+          </div>
+        </div>
         <div className = "col-4" />
         { this.props.comment.comment.replies.map((reply) => {
           function matchreply(author) {
@@ -80,36 +90,48 @@ class RenderComment extends Component {
           const repauthorname = repauthor.name;
           return(
             <div>
-              <Card className = "col-8 offset-1 my-4">
-                <CardBody>
-                  <CardTitle className = "text-left">{ repauthorname }</CardTitle>
-                  <CardText className = "text-left">{ reply.data }</CardText>
-                  <CardText className = "text-right">
-                    <Button className = "btn btn-success" onClick = { () => { this.handleReplier(true)} }>Reply</Button>
-                  </CardText>
-                </CardBody>
-              </Card>
-              <div className = "col-3" />
+              <div className = "col-10 offset-1 col-md-9 col-lg-8">
+                <Card className = "mt-2 mb-1 comment-box">  
+                  <CardTitle className = { "mb-1 mt-1 ml-3 text-left author-name-" + color } >{authorName}</CardTitle>
+                  <CardText className = "ml-3 mb-2 text-left comment-content">{this.props.comment.comment.data}</CardText>
+                </Card>
+                <div className = "text-right">
+                  <Button className="btn btn-link reply-button" onClick = {() => { this.handleReplier(true)} }>Reply</Button>
+                </div>
+              </div>
+              <div className = "col-1 col-md-2 col-lg-3" />
             </div>
           );
         })}
         { this.state.displayReplyform ? 
           <div>
-            <div className = "col-8 offset-1">
+            <div className = "col-10 offset-1 col-md-9 col-lg-8">
               <Form autoComplete = "off">
                 <FormGroup row>
                   <Input type = "text"
                     name = "data"
                     id = "data"
                     placeholder = "post your reply"
-                    className = "col-10"
+                    className = "col-9 col-md-8 col-lg-9 col-xl-9 post-reply-input"
                     onChange = {(event) => { this.handleReplyChange(event) }}
                   />
-                  <Button onClick = {(event) => { this.handleReplySubmit(event) }} className = "col-2" type = "submit">Post reply</Button>
+                  <div className = "col-3 col-md-4 col-lg-3 col-xl-3 d-none d-md-block text-right">
+                    <Button onClick = {(event) => { this.handleReplySubmit(event) }} 
+                    className = { "post-button-" + color } 
+                    type = "submit">Post reply</Button>
+                  </div>
+                  <div className = "col-3 d-block d-md-none text-right">
+                    <Button onClick = {(event) => { this.handleReplySubmit(event) }} 
+                    className = { "post-button-" + color } 
+                    type = "submit">
+                      <span className = "fa fa-caret-right"></span>
+                      <span className = "fa fa-caret-right"></span>
+                    </Button>
+                  </div>
                 </FormGroup>
               </Form>
             </div>
-            <div className = "col-3" />
+            <div className = "col-1 col-md-2 col-lg-3" />
           </div>
         : null}
       </div>

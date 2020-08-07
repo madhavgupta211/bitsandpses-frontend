@@ -27,7 +27,7 @@ function RenderComments ({list, authorlist, stationName}) {
 
   else {
     return(
-      <div className = "col-12">
+      <div className = "col-12 pt-1">
         { list.map((comment) => {
           return(
             <RenderComment 
