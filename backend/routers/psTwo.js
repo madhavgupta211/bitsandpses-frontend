@@ -82,6 +82,7 @@ router.post('/api/2/:station/comment', auth, async (req, res) => {
     const stationJSON = await station.allData();
     res.send(stationJSON);
   } catch (e) {
+    console.log(e);
     res.status(400).send(e);
   }
 });

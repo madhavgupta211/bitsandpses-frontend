@@ -10,8 +10,8 @@ import SearchBar from '../SearchNavbar/searchNavComponent';
 function RenderComments ({list, authorlist, stationName}) {
   if(!list || list.length === 0) {
     return(
-      <div className = "col-12 discussion-container">
-        <h4 className = "m-4">No comments</h4>
+      <div className = "col-12">
+        <h4 className = "p-4 no-comment">No comments</h4>
       </div>
     );
   }
@@ -27,7 +27,7 @@ function RenderComments ({list, authorlist, stationName}) {
 
   else {
     return(
-      <div className = "col-12 discussion-container">
+      <div className = "col-12">
         { list.map((comment) => {
           return(
             <RenderComment 
@@ -127,72 +127,57 @@ class StationDisplay extends Component {
   render() {
     console.log(this.props);
     console.log(this.state.stationDetails.users);
+    let stationChoice = window.localStorage.getItem("stationNo");
+    let color = null;
+    if(stationChoice === "1") {
+      color = "green";
+    }
+    else if(stationChoice === "2") {
+      color = "blue";
+    }
     if(this.state.stationFound === true) {
       return(
-        <div>
-          <SearchBar />
+        <div className = "envelope-sd">
+          <SearchBar color = {color}/>
           <div className = "container">
-            <h1 className = "col-12 text-center heading">{this.state.stationDetails.station.name}</h1>
-            <h4 className = "col-12 text-center heading">Delhi, India</h4>
+            <div className = "col-12 text-center pt-5">
+              <h1 className = { "py-2 station-heading-" + color }>{this.state.stationDetails.station.name}<h5 className = "location-heading pt-1">{this.state.stationDetails.station.location}</h5></h1>
+            </div>
             <div className = "col-12" >
-              <div className = "row text-center">
-                <h3 className = "col-12 sub-heading">CGPA cutoffs for respective campuses</h3>
-              </div>
+              <h3 className = "col-12 sub-heading">CGPA cutoffs for respective campuses</h3>
               <div className = "row mt-3">
-                <div className = "col-4">
-                  <Card className = "cg-card">
-                    <CardBody className = "text-center d-flex align-items-center justify-content-center">
-                      <div>
-                        <CardTitle><h3>Pilani campus</h3></CardTitle>
-                        <CardText><h5>9.07</h5></CardText>
-                      </div>
-                    </CardBody>
-                  </Card>
-                </div>
-                <div className = "col-4">
-                  <Card className = "cg-card">
-                    <CardBody className = "text-center d-flex align-items-center justify-content-center">
-                      <div>
-                        <CardTitle><h3>Goa campus</h3></CardTitle>
-                        <CardText><h5>8.34</h5></CardText>
-                      </div>
-                    </CardBody>
-                  </Card>
-                </div>
-                <div className = "col-4">
-                  <Card className = "cg-card">
-                    <CardBody className = "text-center d-flex align-items-center justify-content-center">
-                      <div>
-                        <CardTitle><h3>Hyderabad campus</h3></CardTitle>
-                        <CardText><h5>7.58</h5></CardText>
-                      </div>
-                    </CardBody>
-                  </Card>
-                </div>
+                <h3 className = "col-12 text-center"><br /><br/>To be added soon<br/><br/></h3>
               </div>
             </div>
             <div className = "col-12">
-              <div className = "row text-center">
-                <h3 className = "col-12 sub-heading">Discussion</h3>
+              <h3 className = "col-12 sub-heading">Discussion</h3>
+              <div className = "discussion-container">
                 <RenderComments list = {this.state.stationDetails.station.discussion} 
                 authorlist = {this.state.stationDetails.users}
                 stationName = {this.props.match.params.stationName} />
+                <div class = "col-12 commenter">
+                  <Form autoComplete = "off" className = "col-12">
+                    <FormGroup row>
+                      <Input type = "text"
+                      name = "data"
+                      id = "data"
+                      className = "col-9 col-md-8 col-lg-9 col-xl-10 post-comment-input"
+                      placeholder = "Write comment"
+                      onChange = {(event) => {this.handleCommentChange(event) }}>
+                      </Input>
+                      <div className = "col-4 col-lg-3 col-xl-2 d-none d-md-block text-right">
+                        <Button onClick = {(event) =>{this.handleCommentSubmit(event)}} type = "submit" className = { "post-button-" + color }>Post Comment</Button>
+                      </div>
+                      <div className = "col-3 d-block d-md-none text-right">
+                        <Button onClick = {(event) =>{this.handleCommentSubmit(event)}} type = "submit" className = { " post-button-" + color }>
+                          <span className = "fa fa-caret-right"></span>
+                          <span className = "fa fa-caret-right"></span>
+                        </Button>
+                      </div>
+                    </FormGroup>
+                  </Form>  
+                </div>
               </div>
-            </div>
-            <div class = "col-12">
-              <Form autoComplete = "off">
-                <FormGroup row>
-                  <Input type = "text"
-                  name = "data"
-                  id = "data"
-                  className = "col-10"
-                  onChange = {(event) => {this.handleCommentChange(event) }}>
-                  </Input>
-                  <div className = "col-2">
-                    <Button onClick = {(event) =>{this.handleCommentSubmit(event)}} type = "submit">Post Comment</Button>
-                  </div>
-                </FormGroup>
-              </Form>  
             </div>
           </div>
         </div>

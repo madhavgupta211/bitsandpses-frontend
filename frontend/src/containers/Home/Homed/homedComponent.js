@@ -214,8 +214,9 @@ class Homed extends Component {
         <div className = "container d-none d-lg-block">
           <div className = "row row-contents justify-content-center align-items-start">
             <div className = "col-4 filter-box">
-              <h1 className = "text-left filter-heading">Filters<br /><br /><br /><br /><br />
-              </h1>
+              <h1 className = "text-left filter-heading">Filters</h1>
+              <h3 className = "text-left filter-heading">To be added soon!</h3>
+              <br /><br /><br />
             </div>
             <div className = "col-6 offset-1 results-box mb-4">
               <div>

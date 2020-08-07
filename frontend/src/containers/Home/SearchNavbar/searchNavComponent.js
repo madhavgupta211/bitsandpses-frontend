@@ -25,29 +25,22 @@ class SearchBar extends Component {
   
   render() {
     return(
-      <div className = "row row-search align-items-center">
-        <div className = "col-8 offset-2 justify-content-center">
-          <LocalForm onSubmit = { (values) => { this.preventSearch(values) } }>
+      <div className = "row row-search align-items-center fixed-top envelope zer">
+        <div className = "col-10 offset-1 col-md-8 offset-md-2 justify-content-center">
+          <LocalForm onSubmit = { (values) => { this.preventSearch(values) } } autoComplete = "off" >
             <Row className = "form-group">
-              <div className = "col-8 offset-1">
+              <div className = "col-9 col-md-8 offset-md-1">
                 <Control.text
                 model = ".search"
                 name = "search"
                 id = "search"
                 placeholder = "Search for station"
-                className = "col-12 form-control"
+                className = "col-12 form-control search-nav"
                 validators = { { minLength: minLength(1)} } />
-                &nbsp;
-                <Errors className = "col-12 text-success text-left"
-                 model = ".search"
-                 show = "touched"
-                 messages = {{
-                   minLength: 'Search field is empty'
-                 }} />
               </div>
               <Button 
                type = "submit" 
-               className = "btn btn-success col-2 align-self-start">Search</Button>
+               className = { "btn col-3 col-md-2 align-self-start search-nav-button-" + this.props.color } >Search</Button>
             </Row>
           </LocalForm>
           { this.state.router ? 
