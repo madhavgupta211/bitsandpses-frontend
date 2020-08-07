@@ -7,13 +7,13 @@ const Station = require('../models/station');
 router.get('/api/2/all', async (req, res) => {
   try {
     const stations = await Station.find(
-        { category: { type: 'ps2' } },
-        'name category field location cg slug',
-        {
-          limit: parseInt(req.query.limit),
-          skip: parseInt(req.query.skip)
-        }
-      );
+      { category: { type: 'ps2' } },
+      'name category field location cg slug',
+      {
+        limit: parseInt(req.query.limit),
+        skip: parseInt(req.query.skip)
+      }
+    );
     res.send(stations);
   } catch (e) {
     res.status(400).send(e);
@@ -34,16 +34,16 @@ router.get('/api/2/:station', async (req, res) => {
 
 // search the stations by name for ps2
 router.get('/api/2', async (req, res) => {
-  queries = {
-    category: { type: 'ps2'}
-  }
+  const queries = {
+    category: { type: 'ps2' }
+  };
 
   if (req.query.name) {
-    queries.name = { $regex: new RegExp(req.query.name, 'i') }
+    queries.name = { $regex: new RegExp(req.query.name, 'i') };
   }
 
   if (req.query.location) {
-    queries.location = { $regex: new RegExp(req.query.location, 'i') }
+    queries.location = { $regex: new RegExp(req.query.location, 'i') };
   }
 
   try {

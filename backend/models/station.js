@@ -12,7 +12,7 @@ const stationSchema = new mongoose.Schema({
     type: { type: String, enum: ['ps1', 'ps2'] }
   },
   field: {
-    type: { type: String, enum: ['IT', 'Finance', 'Core'] }
+    type: { type: String, enum: ['IT', 'Finance', 'Consulting', 'Mechanical', 'Chemical', 'Civil', 'Biology', 'Instrumentation', 'Electrical', 'Social'] }
   },
   location: {
     type: String
@@ -64,15 +64,15 @@ stationSchema.methods.allData = async function () {
   let usersList = [];
 
   // iterate over the discussion comments
-  station.discussion.forEach((comment) => {
+  for (let i = 0; i < station.discussion.length; i++) {
     // push the user id of comment author
-    usersList.push(comment.user);
+    usersList.push(station.discussion[i].comment.user);
 
     // iterate over the comment replies
-    comment.replies.forEach((reply) => {
-      usersList.push(reply.user);
-    });
-  });
+    for (let j = 0; j < station.discussion[i].comment.replies.length; j++) {
+      usersList.push(station.discussion[i].comment.replies[j].user);
+    }
+  }
 
   // remove duplicates
   usersList = Array.from(new Set(usersList.map(JSON.stringify))).map(JSON.parse);
@@ -80,12 +80,10 @@ stationSchema.methods.allData = async function () {
   // find the users in the database
   const users = await User.find().where('_id').in(usersList).exec();
 
-  // // convert the users to JSON
-  // users = await Promise.all(users.map(async (user) => await user.toJSON()));
-
-  // for (let i = 0; i < users.length; i++) {
-  //   users[i] = await users[i].toJSON();
-  // }
+  // convert the users to JSON
+  for (let i = 0; i < users.length; i++) {
+    users[i] = await users[i].toJSON();
+  }
 
   return { station, users };
 };
