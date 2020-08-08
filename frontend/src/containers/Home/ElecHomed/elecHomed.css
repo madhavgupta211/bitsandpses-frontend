@@ -17,12 +17,12 @@
     background-color: #252422;
 }
 
-.search-box {
+.elec-search-box {
     background-color: #EFEFEF !important;
     border-radius: 30px;
 }
 
-.search-sub-text {
+.elec-search-sub-text {
     color: #2A9134;
     font-family: 'Ubuntu' , serif ;
     font-weight: 300;
@@ -89,7 +89,7 @@
     height: 40px !important;
 }
 
-.search-button {
+.elec-search-button {
     border-radius: 100px !important;
     background-color: #0353A4 !important;
     border-width: 0px !important;
@@ -101,13 +101,13 @@
     max-width: 200px !important;
 }
 
-.filter-heading {
+.elec-filter-heading {
     font-family: 'Bree Serif', serif;
     color: #EFEFEF;
     padding: 1vw 2vh;
 }
 
-.result-title {
+.elec-result-title {
     font-family: 'Bree Serif', serif;
     color: #2A9134;
     padding: 1vw 2vh;
@@ -132,7 +132,7 @@
     color: #0353A4 !important;
 }
 
-.label-font {
+.elec-label-font {
     color: #2A9134;
     font-family: 'Ubuntu' , serif ;
     font-weight: 300;
@@ -143,7 +143,7 @@
     border-radius: 12px;
 }
 
-.station-link-header {
+.elec-station-link-header {
     color: #0353A4 !important;
     font-family: 'Ubuntu', serif !important;
     font-weight: 400;

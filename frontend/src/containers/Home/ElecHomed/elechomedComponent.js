@@ -13,14 +13,14 @@ function ListDisplay ({list,title}) {
   else {
     return(
       <div>
-        <h1 className = { "result-title"}>{title}</h1>
+        <h1 className = { "elec-result-title"}>{title}</h1>
         <ul className = "list-unstyled">
           { list.map((item) => {
               return(
                 <li>
                   <Link className = "station-linker" to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.slug} >
                     <div className = "my-3 mx-2 station-links">
-                      <h5 className = { "text-left station-link-header" }>{item.name}</h5>
+                      <h5 className = { "text-left elec-station-link-header" }>{item.name}</h5>
                       <h6 className = "location-station text-left">{"Location: " + item.location}</h6>
                     </div>
                   </Link>
@@ -169,13 +169,13 @@ class CourseDisplay extends Component {
       <div className = "envelope">
         <div className = "container">
           <div className = "row row-contents justify-content-center">
-            <div className = { "col-11 search-box" }>
+            <div className = { "col-11 elec-search-box" }>
               <h1 className = "search-heading text-left text-md-center">Search.</h1>
-              <h6 className = "search-sub-text text-left text-md-center d-none d-md-block">
+              <h6 className = "elec-search-sub-text text-left text-md-center d-none d-md-block">
               Find the course you are looking for according to the priorities you set.<br />
               Search by name or courseNo, filter according to your preferences.
               </h6>
-              <h6 className = "search-sub-text text-left text-md-center d-block d-md-none">
+              <h6 className = "elec-search-sub-text text-left text-md-center d-block d-md-none">
               We will try to find what you are looking for
               </h6>
               <div className = "search-bar-hold">
@@ -190,18 +190,18 @@ class CourseDisplay extends Component {
                   </div>
                   <div className = "col-6 col-md-4 offset-md-2 text-left text-md-left padding-remover">
                     <FormGroup check inline className = "mt-4">
-                      <Label check className = "label-font">
+                      <Label check className = "elec-label-font">
                         <Input type = "radio" name = "searchMethod" value = "name" checked/> By Name
                       </Label>
                     </FormGroup>
                     <FormGroup check inline className = "mt-4">
-                      <Label check className = "label-font">
+                      <Label check className = "elec-label-font">
                         <Input type = "radio" name = "searchMethod" value = "location"/> By CourseNo.
                       </Label>
                     </FormGroup>
                   </div>
                   <div className = "col-6 col-md-4 text-right text-md-right padding-remover">
-                    <Button className = "search-button mt-4 ml-md-3" onClick = {(event) => { this.handleEmptytype(event) }} type = "submit" >Search</Button>
+                    <Button className = "elec-search-button mt-4 ml-md-3" onClick = {(event) => { this.handleEmptytype(event) }} type = "submit" >Search</Button>
                   </div>
                 </Form>
               </div>
@@ -211,8 +211,8 @@ class CourseDisplay extends Component {
         <div className = "container d-none d-lg-block">
           <div className = "row row-contents justify-content-center align-items-start">
             <div className = "col-4 filter-box">
-              <h1 className = "text-left filter-heading">Filters</h1>
-              <h3 className = "text-left filter-heading">To be added soon!</h3>
+              <h1 className = "text-left elec-filter-heading">Filters</h1>
+              <h3 className = "text-left elec-filter-heading">To be added soon!</h3>
               <br /><br /><br />
             </div>
             <div className = "col-6 offset-1 results-box mb-4">
@@ -230,9 +230,9 @@ class CourseDisplay extends Component {
         </div>
         <div className = "row row-contents d-block d-lg-none">
           <div className = "filter-box-small">
-            <h2 className = "filter-heading pt-2">Filters</h2>
+            <h2 className = "elec-filter-heading pt-2">Filters</h2>
             <br/>
-            <h5 className = "filter-heading">To be added soon!</h5>
+            <h5 className = "elec-filter-heading">To be added soon!</h5>
             <br />
           </div>
         </div>
