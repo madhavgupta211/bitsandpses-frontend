@@ -8,7 +8,7 @@ router.get('/api/course/all', async (req, res) => {
   try {
     const courses = await Course.find(
       {},
-      'name title slug',
+      'title number slug',
       {
         limit: parseInt(req.query.limit),
         skip: parseInt(req.query.skip)
@@ -41,7 +41,7 @@ router.get('/api/course', async (req, res) => {
   const queries = {};
 
   if (req.query.name) {
-    queries.name = { $regex: new RegExp(req.query.name, 'i') };
+    queries.number = { $regex: new RegExp(req.query.name, 'i') };
   }
 
   if (req.query.title) {
@@ -50,7 +50,7 @@ router.get('/api/course', async (req, res) => {
 
   try {
     const courses = await Course.find(queries,
-      'name title slug',
+      'number title slug',
       {
         limit: parseInt(req.query.limit),
         skip: parseInt(req.query.skip)

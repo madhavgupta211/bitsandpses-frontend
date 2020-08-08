@@ -3,12 +3,12 @@ const URLSlugs = require('mongoose-url-slugs');
 const User = require('./user');
 
 const courseSchema = new mongoose.Schema({
-  name: {
+  title: {
     type: String,
     required: true,
     trim: true
   },
-  title: {
+  number: {
     type: String,
     required: true,
     trim: true
@@ -52,7 +52,7 @@ const courseSchema = new mongoose.Schema({
   }]
 });
 
-courseSchema.plugin(URLSlugs('title'));
+courseSchema.plugin(URLSlugs('number'));
 
 courseSchema.methods.allData = async function () {
   const course = this.toObject();
