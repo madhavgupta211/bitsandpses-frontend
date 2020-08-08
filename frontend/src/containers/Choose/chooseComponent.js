@@ -4,7 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 
 function Choose () {
   const storedChoice = parseInt(window.localStorage.getItem("stationNo"));
-  if(storedChoice === 1 || storedChoice === 2) {
+  if(storedChoice === 1 || storedChoice === 2 || storedChoice === 3 ) {
     return(
       <Redirect to =  { "/" + storedChoice } />
     );
