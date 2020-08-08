@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Input, Button, Label } from 'reactstrap';
-import "./homed.css";
-import axios from 'axios';
+import "./elecHomed.css";
 import { Link } from 'react-router-dom';
 
-function ListDisplay ({list,title,color}) {
+function ListDisplay ({list,title}) {
   console.log(list);
   if(list === null) {
     return(
@@ -14,14 +13,14 @@ function ListDisplay ({list,title,color}) {
   else {
     return(
       <div>
-        <h1 className = { "result-title-" + color }>{title}</h1>
+        <h1 className = { "result-title"}>{title}</h1>
         <ul className = "list-unstyled">
           { list.map((item) => {
               return(
                 <li>
                   <Link className = "station-linker" to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.slug} >
                     <div className = "my-3 mx-2 station-links">
-                      <h5 className = { "text-left station-link-header-" + color }>{item.name}</h5>
+                      <h5 className = { "text-left station-link-header" }>{item.name}</h5>
                       <h6 className = "location-station text-left">{"Location: " + item.location}</h6>
                     </div>
                   </Link>
@@ -34,7 +33,7 @@ function ListDisplay ({list,title,color}) {
   }
 }
 
-class Homed extends Component {
+class CourseDisplay extends Component {
   constructor(props) {
     super(props);
     this.findplaceholder = this.findplaceholder.bind(this);
@@ -166,23 +165,15 @@ class Homed extends Component {
   }
 
   render() {
-    let stationChoice = window.localStorage.getItem("stationNo");
-    let color = null;
-    if(stationChoice === "1") {
-      color = "green";
-    }
-    else if(stationChoice === "2") {
-      color = "blue";
-    }
     return(
       <div className = "envelope">
         <div className = "container">
           <div className = "row row-contents justify-content-center">
-            <div className = { "col-11 search-box-" + color }>
+            <div className = { "col-11 search-box" }>
               <h1 className = "search-heading text-left text-md-center">Search.</h1>
               <h6 className = "search-sub-text text-left text-md-center d-none d-md-block">
-              Find the station you are looking for according to the priorities you set.<br />
-              Search by name or location, filter according to your preferences.
+              Find the course you are looking for according to the priorities you set.<br />
+              Search by name or courseNo, filter according to your preferences.
               </h6>
               <h6 className = "search-sub-text text-left text-md-center d-block d-md-none">
               We will try to find what you are looking for
@@ -205,7 +196,7 @@ class Homed extends Component {
                     </FormGroup>
                     <FormGroup check inline className = "mt-4">
                       <Label check className = "label-font">
-                        <Input type = "radio" name = "searchMethod" value = "location"/> By Location
+                        <Input type = "radio" name = "searchMethod" value = "location"/> By CourseNo.
                       </Label>
                     </FormGroup>
                   </div>
@@ -229,7 +220,6 @@ class Homed extends Component {
                 <ListDisplay 
                  list = {this.state.searchData} 
                  title = {this.state.resultTitle} 
-                 color = {color}
                 />
               </div>
               { this.state.shouldLoadMore ? 
@@ -253,7 +243,6 @@ class Homed extends Component {
                 <ListDisplay 
                   list = {this.state.searchData} 
                   title = {this.state.resultTitle} 
-                  color = {color}
                 />
               </div>
               { this.state.shouldLoadMore ? 
@@ -267,4 +256,4 @@ class Homed extends Component {
   }
 };
 
-export default Homed;
+export default CourseDisplay;
