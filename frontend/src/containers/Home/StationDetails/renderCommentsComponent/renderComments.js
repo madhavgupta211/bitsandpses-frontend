@@ -60,6 +60,7 @@ class RenderComment extends Component {
   };
 
   render() {
+    
     const author = this.props.authorlist.find(this.matchid);
     const authorName = author.name;
     let stationChoice = window.localStorage.getItem("stationNo");
@@ -93,7 +94,7 @@ class RenderComment extends Component {
               <div className = "col-10 offset-1 col-md-9 col-lg-8">
                 <Card className = "mt-2 mb-1 comment-box">  
                   <CardTitle className = { "mb-1 mt-1 ml-3 text-left author-name-" + color } >{authorName}</CardTitle>
-                  <CardText className = "ml-3 mb-2 text-left comment-content">{this.props.comment.comment.data}</CardText>
+                  <CardText className = "ml-3 mb-2 text-left comment-content">{reply.data}</CardText>
                 </Card>
                 <div className = "text-right">
                   <Button className="btn btn-link reply-button" onClick = {() => { this.handleReplier(true)} }>Reply</Button>
