@@ -8,6 +8,7 @@ import StationDisplay from './StationDetails/stationDisplayComponent';
 import ElecHomed from './ElecHomed/elechomedComponent';
 import CourseDisplay from './CourseDisplay/courseDisplayComponent';
 import ElecHeader from './ElecHeader/elecHeaderComponent';
+import Contact from './Contact/contactComponent';
 
 class Home extends Component {
   constructor(props) {
@@ -23,6 +24,7 @@ class Home extends Component {
           <Header urlinfo = {this.props.match} />
           <Switch>
             <Route path = {this.props.match.url + '/home' } component = {Homed} />
+            <Route path = {this.props.match.url + '/contact' } component = {Contact} />
             <Route path = {this.props.match.url + '/station/:stationName'} component = {StationDisplay}/>
             <Redirect to = {this.props.match.url + '/home'} />
           </Switch>
@@ -35,7 +37,8 @@ class Home extends Component {
           <ElecHeader urlinfo = {this.props.match} />
           <Switch>
             <Route path = {this.props.match.url + '/home' } component = {ElecHomed} />
-            <Route path = {this.props.match.url + '/course' } component = {CourseDisplay} />
+            <Route path = {this.props.match.url + '/contact' } component = {Contact} />
+            <Route path = {this.props.match.url + '/course/:courseSlug' } component = {CourseDisplay} />
             <Redirect to = {this.props.match.url + '/home'} />
           </Switch>
         </div>
