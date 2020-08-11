@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Form, FormGroup, Input, Button, Label } from 'reactstrap';
 import "./elecHomed.css";
 import { Link } from 'react-router-dom';
+import CheckBox from './checkBoxComponent';
+import { Box } from 'admin-bro';
 
 function ListDisplay ({list,title}) {
   console.log(list);
@@ -20,8 +22,8 @@ function ListDisplay ({list,title}) {
                 <li>
                   <Link className = "station-linker" to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.slug} >
                     <div className = "my-3 mx-2 station-links">
-                      <h5 className = { "text-left elec-station-link-header" }>{item.name}</h5>
-                      <h6 className = "location-station text-left">{"Location: " + item.location}</h6>
+                      <h5 className = { "text-left elec-station-link-header" }>{item.title}</h5>
+                      <h6 className = "location-station text-left">{"Number: " + item.number}</h6>
                     </div>
                   </Link>
                 </li>
@@ -46,7 +48,27 @@ class CourseDisplay extends Component {
       searchField: "",
       resultTitle: "All Stations",
       stationsDisplayed: 0,
-      shouldLoadMore: true
+      shouldLoadMore: true,
+      allCheck: false,
+      courses: [
+        { id: 1, value: "BITS", name: "General", isChecked: false },
+        { id: 2, value: "BIO", name: "Biology", isChecked: false },
+        { id: 3, value: "CE", name: "Civil", isChecked: false },
+        { id: 4, value: "CHE", name: "Chemical", isChecked: false },
+        { id: 5, value: "CHEM", name: "Chemistry", isChecked: false },
+        { id: 6, value: "CS", name: "Computer Science", isChecked: false },
+        { id: 7, value: "ECON", name: "Economics", isChecked: false },
+        { id: 8, value: "EEE", name: "Electrical & Electronics", isChecked: false },
+        { id: 9, value: "GS|\bHSS", name: "Humanities", isChecked: false },
+        { id: 10, value: "INSTR", name: "Instrumentation", isChecked: false },
+        { id: 11, value: "CS", name: "CSE", isChecked: false },
+        { id: 12, value: "MATH", name: "Mathematics", isChecked: false },
+        { id: 13, value: "MBA", name: "MBA", isChecked: false },
+        { id: 14, value: "ME", name: "Mechanical", isChecked: false },
+        { id: 15, value: "MF", name: "Manufacturing", isChecked: false },
+        { id: 16, value: "PHA", name: "Pharmacy", isChecked: false },
+        { id: 17, value: "PHY", name: "Physics", isChecked: false },
+      ]
     }
   }
   
@@ -62,7 +84,7 @@ class CourseDisplay extends Component {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
         const sender = this.props.location.search.split("=")[2];
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( '/api/course?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -79,7 +101,7 @@ class CourseDisplay extends Component {
           throw error;
         }
       } else {
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '/all?limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( '/api/course/all?limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -100,6 +122,32 @@ class CourseDisplay extends Component {
     }
   }
 
+  handleFilters = (event) => {
+    event.preventDefault();
+  }
+
+  toggleCheck = (event) => {
+    let courses = this.state.courses;
+    courses.forEach((course) => {
+      course.isChecked = event.target.checked
+    });
+    this.setState({
+      courses: courses
+    });
+  }
+
+  handleCheckChild = (event) => {
+    let courses = this.state.courses;
+    courses.forEach((course) => {
+      if(event.target.value === course.value) {
+        course.isChecked = event.target.checked
+      }
+    });
+    this.setState({
+      courses: courses      
+    });
+  }
+  
   findplaceholder = () => {
     if( this.props.location.search !== "") {
       return this.props.location.search.split("=")[1].split("&")[0];
@@ -126,7 +174,7 @@ class CourseDisplay extends Component {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
         const sender = this.props.location.search.split("=")[2];
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( '/api/course?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -143,7 +191,7 @@ class CourseDisplay extends Component {
           throw error;
         }
       } else {
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '/all?limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( '/api/course/all?limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -191,12 +239,12 @@ class CourseDisplay extends Component {
                   <div className = "col-6 col-md-4 offset-md-2 text-left text-md-left padding-remover">
                     <FormGroup check inline className = "mt-4">
                       <Label check className = "elec-label-font">
-                        <Input type = "radio" name = "searchMethod" value = "name" checked/> By Name
+                        <Input type = "radio" name = "searchMethod" value = "title" checked/> By Name
                       </Label>
                     </FormGroup>
                     <FormGroup check inline className = "mt-4">
                       <Label check className = "elec-label-font">
-                        <Input type = "radio" name = "searchMethod" value = "location"/> By CourseNo.
+                        <Input type = "radio" name = "searchMethod" value = "number"/> By CourseNo.
                       </Label>
                     </FormGroup>
                   </div>
@@ -210,10 +258,22 @@ class CourseDisplay extends Component {
         </div>
         <div className = "container d-none d-lg-block">
           <div className = "row row-contents justify-content-center align-items-start">
-            <div className = "col-4 filter-box">
-              <h1 className = "text-left elec-filter-heading">Filters</h1>
-              <h3 className = "text-left elec-filter-heading">To be added soon!</h3>
-              <br /><br /><br />
+            <div className = "col-4 filter-box text-left">
+              <h1 className = "text-left elec-filter-heading pb-1">Filters</h1>
+              <Form className = "row ml-3" autoComplete = "off">
+                <FormGroup check className = "col-12 mb-2">
+                  <Label check className = "filter-label-font">
+                      <Input value = "checked-all" type = "checkbox" onClick = {(event) => {this.toggleCheck(event)}} />Select All
+                  </Label>
+                </FormGroup>
+                { this.state.courses.map((course => {
+                  return(
+                    <CheckBox {...course} handleCheckChild = {this.handleCheckChild} />
+                  );
+                }))}
+              <Button className = "apply-filter-button mb-3 mt-2 pb-2" onClick = {(event) => {this.handleFilters(event)}}>Apply</Button>
+              </Form>
+              
             </div>
             <div className = "col-6 offset-1 results-box mb-4">
               <div>

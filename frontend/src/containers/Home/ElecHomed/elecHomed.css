@@ -162,3 +162,24 @@
     font-family: 'Ubuntu', serif !important;
     font-weight: 300;
 }
+
+.apply-filter-button {
+    outline: none !important;
+    box-shadow: none !important;
+    background-color: #2A9134 !important;
+    font-family: 'Ubuntu', serif !important;
+    color: #fffcf2 !important;
+    border-radius: 50px !important;
+    border-width: 0px !important;
+    width: 40% !important;
+}
+
+.apply-filter-button:focus, .apply-filter-button:hover {
+    background-color: #0353A4 !important;
+}
+
+.filter-label-font {
+    font-family: 'Ubuntu', serif !important;
+    color: #fffcf2 !important;
+    font-weight: 300 !important;
+}
