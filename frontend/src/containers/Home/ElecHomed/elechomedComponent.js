@@ -3,7 +3,6 @@ import { Form, FormGroup, Input, Button, Label } from 'reactstrap';
 import "./elecHomed.css";
 import { Link } from 'react-router-dom';
 import CheckBox from './checkBoxComponent';
-import { Box } from 'admin-bro';
 
 function ListDisplay ({list,title}) {
   console.log(list);
@@ -20,7 +19,7 @@ function ListDisplay ({list,title}) {
           { list.map((item) => {
               return(
                 <li>
-                  <Link className = "station-linker" to = { '/' + window.localStorage.getItem("stationNo") + '/station/' + item.slug} >
+                  <Link className = "station-linker" to = { '/' + window.localStorage.getItem("stationNo") + '/course/' + item.slug} >
                     <div className = "my-3 mx-2 station-links">
                       <h5 className = { "text-left elec-station-link-header" }>{item.title}</h5>
                       <h6 className = "location-station text-left">{"Number: " + item.number}</h6>
@@ -46,12 +45,12 @@ class CourseDisplay extends Component {
       foundResults: false,
       topData: null,
       searchField: "",
-      resultTitle: "All Stations",
+      resultTitle: "All Courses",
       stationsDisplayed: 0,
       shouldLoadMore: true,
       allCheck: false,
       courses: [
-        { id: 1, value: "BITS", name: "General", isChecked: false },
+        { id: 1, value: "BITS", name: "General", isChecked: false},
         { id: 2, value: "BIO", name: "Biology", isChecked: false },
         { id: 3, value: "CE", name: "Civil", isChecked: false },
         { id: 4, value: "CHE", name: "Chemical", isChecked: false },
@@ -79,6 +78,18 @@ class CourseDisplay extends Component {
   }
 
   async componentDidMount() {
+    let courses = this.state.courses;
+    courses.forEach((course) => {
+      if(window.sessionStorage.getItem(course.name) === "0") {
+        course.isChecked = false;    
+      }
+      else {
+        course.isChecked = true;
+      }
+    });
+    this.setState({
+      courses: courses
+    });
     console.log(this.props);
     try {
       if(this.props.location.search !== "") {
@@ -90,7 +101,7 @@ class CourseDisplay extends Component {
           const json = await response.json();
           this.setState({
             searchData: json,
-            resultTitle: "Search Results",
+            resultTitle: "Search Courses",
             stationsDisplayed: this.state.stationsDisplayed + json.length,
             shouldLoadMore: ( json.length === 10 )
           });
@@ -101,7 +112,21 @@ class CourseDisplay extends Component {
           throw error;
         }
       } else {
-        const response = await fetch( '/api/course/all?limit=10&skip=' + this.state.stationsDisplayed );
+        let query = "(";
+        let counter = 0;
+        this.state.courses.forEach((course) => {
+          if(course.isChecked) {
+            if(counter === 0) {
+              query = query + '\\b' + course.value; 
+            }
+            else {
+              query = query + '|\\b' + course.value;
+            }
+            counter++;
+          }
+        });
+        query = query + ')';
+        const response = await fetch( '/api/course?number=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -124,12 +149,19 @@ class CourseDisplay extends Component {
 
   handleFilters = (event) => {
     event.preventDefault();
+
   }
 
   toggleCheck = (event) => {
     let courses = this.state.courses;
     courses.forEach((course) => {
       course.isChecked = event.target.checked
+      if(course.isChecked) {
+        window.sessionStorage.setItem(course.name,"1");
+      }
+      else {
+        window.sessionStorage.setItem(course.name,"0");
+      }
     });
     this.setState({
       courses: courses
@@ -141,6 +173,12 @@ class CourseDisplay extends Component {
     courses.forEach((course) => {
       if(event.target.value === course.value) {
         course.isChecked = event.target.checked
+        if(course.isChecked) {
+          window.sessionStorage.setItem(course.name,"1");
+        }
+        else {
+          window.sessionStorage.setItem(course.name,"0");
+        }
       }
     });
     this.setState({
@@ -180,7 +218,7 @@ class CourseDisplay extends Component {
           const json = await response.json();
           this.setState({
             searchData: [...this.state.searchData,...json],
-            resultTitle: "Search Results",
+            resultTitle: "Searched Courses",
             stationsDisplayed: this.state.stationsDisplayed + json.length,
             shouldLoadMore: ( json.length === 10 )
           });
@@ -191,7 +229,21 @@ class CourseDisplay extends Component {
           throw error;
         }
       } else {
-        const response = await fetch( '/api/course/all?limit=10&skip=' + this.state.stationsDisplayed );
+        let query = "(";
+        let counter = 0;
+        this.state.courses.forEach((course) => {
+          if(course.isChecked) {
+            if(counter === 0) {
+              query = query + '\\b' + course.value; 
+            }
+            else {
+              query = query + '|\\b' + course.value;
+            }
+            counter++;
+          }
+        });
+        query = query + ')';
+        const response = await fetch( '/api/course?number=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -271,9 +323,10 @@ class CourseDisplay extends Component {
                     <CheckBox {...course} handleCheckChild = {this.handleCheckChild} />
                   );
                 }))}
-              <Button className = "apply-filter-button mb-3 mt-2 pb-2" onClick = {(event) => {this.handleFilters(event)}}>Apply</Button>
               </Form>
-              
+              <Link>
+                <Button className = "ml-3 apply-filter-button mb-3 mt-2 pb-2" to = { window.localStorage.getItem("stationNo") + '/home/filtered' }>Apply</Button>
+              </Link>
             </div>
             <div className = "col-6 offset-1 results-box mb-4">
               <div>

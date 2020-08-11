@@ -1,7 +1,7 @@
-import React, { Component, useState } from 'react';
+import React, { Component } from 'react';
 import './stationDisplay.css';
 import NotFound from '../../NotFound/notfoundComponent';
-import { Card, CardBody, CardTitle, CardText, FormGroup, Form, Input, Button, CardFooter } from 'reactstrap';
+import { FormGroup, Form, Input, Button} from 'reactstrap';
 import axios from 'axios';
 import RenderComment from './renderCommentsComponent/renderComments';
 import { withRouter } from 'react-router-dom';
