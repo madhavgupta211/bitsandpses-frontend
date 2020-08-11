@@ -40,8 +40,8 @@ router.get('/api/course/:slug', async (req, res) => {
 router.get('/api/course', async (req, res) => {
   const queries = {};
 
-  if (req.query.name) {
-    queries.number = { $regex: new RegExp(req.query.name, 'i') };
+  if (req.query.number) {
+    queries.number = { $regex: new RegExp(req.query.number, 'i') };
   }
 
   if (req.query.title) {
