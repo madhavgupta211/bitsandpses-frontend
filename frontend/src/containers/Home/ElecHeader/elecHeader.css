@@ -1,8 +1,8 @@
-.white-bg-navbar {
+.white-bg-navbar-elec {
     background-color: white !important;
     box-shadow: 0px -6px 24px -1px rgba(0,0,0,0.75);
     z-index: 2 !important;
-    height: 65px !important;
+    min-height: 65px !important;
 }
 
 .navbrand-title {

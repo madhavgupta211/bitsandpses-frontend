@@ -6,6 +6,7 @@ import axios from 'axios';
 import RenderComment from './courseComments/courseComments';
 import { withRouter } from 'react-router-dom';
 import SearchBar from '../searchCourseNav/searchCourseNavComponent';
+import baseUrl from '../../../baseUrl';
 
 function RenderComments ({list, authorlist, courseSlug}) {
   if(!list || list.length === 0) {
@@ -67,7 +68,7 @@ class CourseDisplay extends Component {
     console.log(this.props.match.params.courseSlug);
     const query = this.props.match.params.courseSlug;
     try {
-      const response = await fetch('/api/course/' + query);
+      const response = await fetch( baseUrl + '/api/course/' + query);
       if(response.ok) {
         const json = await response.json();
         console.log(json);
@@ -153,6 +154,7 @@ class CourseDisplay extends Component {
   render() {
     console.log(this.props);
     console.log(this.state.courseDesc);
+    window.localStorage.setItem("stationNo", "3");
     if(this.state.courseFound === true) {
       let professors = [];
       this.state.courseDesc.lectures.forEach((section) => { 

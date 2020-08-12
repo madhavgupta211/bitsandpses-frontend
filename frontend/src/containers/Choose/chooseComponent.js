@@ -57,6 +57,9 @@ function Choose () {
             if content on this website turns out to be slightly deviating from actual data. Just like with you,
             BITS Admin was a jerk to us too.
             </h2>
+            <div className = "col-12">
+              <Link to = {'/' + 3}>BITSandPSes(Electives)</Link>
+            </div>
             <h2 className = "col-9 disclaimer d-block d-lg-none">
             Choose the left one if you were robbed 
             of 60k. Right one if you are looking

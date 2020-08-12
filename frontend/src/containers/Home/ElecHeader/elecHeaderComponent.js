@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import "./elecHeader.css";
 import { Navbar, NavbarBrand, Nav, NavItem, Input, Button, Form, FormGroup, NavbarToggler, Collapse } from 'reactstrap';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, Redirect, useHistory } from 'react-router-dom';
 import axios from 'axios';
-
+import baseUrl from '../../../baseUrl';
 
 class ElecHeader extends Component {
 
@@ -13,7 +13,8 @@ class ElecHeader extends Component {
     this.handlelogout = this.handlelogout.bind(this);
     this.state = {
       userLoggedin: true,
-      isNavOpen: false
+      isNavOpen: false,
+      routetoStation: false
     };
   }
 
@@ -28,7 +29,7 @@ class ElecHeader extends Component {
       const cookies = document.cookie.split('; ');
       const value = cookies.find(item => item.startsWith('jwt')).split('=')[1];
       const response = await axios({
-        url: window.location.origin + '/auth/logout',
+        url: baseUrl + '/auth/logout',
         method: 'post',
         headers: {
           Authorization: `Bearer ${value}`
@@ -71,7 +72,7 @@ class ElecHeader extends Component {
   
   render() {
     return(
-      <Navbar light className = "white-bg-navbar fixed-top" expand = "md">
+      <Navbar light className = "white-bg-navbar-elec fixed-top" expand = "md">
         <div className = "container">
           <NavbarBrand className = "mr-auto"><NavLink to = {this.props.urlinfo.url + '/home'} className = "text-decoration-none" >
             <h1 className = "navbrand-title">  
@@ -92,14 +93,13 @@ class ElecHeader extends Component {
                   <NavLink className = "nav-linker" to = {this.props.urlinfo.url + '/contact'}>CONTACT US</NavLink>
                 </NavItem>
                 <NavItem className = "d-flex align-items-center nav-items my-3 my-md-0">
-                  <NavLink className = "nav-linker" onclick = { window.localStorage.setItem("stationNo","0") } to = '/' >STATIONS</NavLink>
+                  <Link className = "nav-linker" to = "/1/home" >STATIONS</Link>
                 </NavItem>
                 <NavItem className = "d-flex align-items-center nav-items my-3 my-md-0">
                   <this.loginHandle />
                 </NavItem>
               </Nav>
             </Collapse>
-            
         </div>
       </Navbar>
     );

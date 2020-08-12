@@ -6,6 +6,7 @@ import axios from 'axios';
 import RenderComment from './renderCommentsComponent/renderComments';
 import { withRouter } from 'react-router-dom';
 import SearchBar from '../SearchNavbar/searchNavComponent';
+import baseUrl from '../../../baseUrl';
 
 function RenderComments ({list, authorlist, stationName}) {
   if(!list || list.length === 0) {
@@ -63,7 +64,7 @@ class StationDisplay extends Component {
   async componentDidMount() {
     const query = this.props.match.params.stationName;
     try {
-      const response = await fetch('/api/' + window.localStorage.getItem("stationNo") + '/' + query);
+      const response = await fetch( baseUrl + '/api/' + window.localStorage.getItem("stationNo") + '/' + query);
       if(response.ok) {
         const json = await response.json();
         this.setState({

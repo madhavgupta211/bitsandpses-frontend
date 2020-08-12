@@ -3,6 +3,7 @@ import { Navbar, NavbarBrand, Nav, NavItem, Input, Button, Form, FormGroup, Navb
 import { NavLink, Link } from 'react-router-dom';
 import axios from 'axios';
 import './header.css';
+import baseUrl from '../../../baseUrl';
 
 class Header extends Component {
 
@@ -42,7 +43,7 @@ class Header extends Component {
       const cookies = document.cookie.split('; ');
       const value = cookies.find(item => item.startsWith('jwt')).split('=')[1];
       const response = await axios({
-        url: window.location.origin + '/auth/logout',
+        url: baseUrl + '/auth/logout',
         method: 'post',
         headers: {
           Authorization: `Bearer ${value}`
@@ -117,6 +118,9 @@ class Header extends Component {
                 </NavItem>
                 <NavItem className = "d-flex align-items-center nav-items my-3 my-md-0">
                   <NavLink className = {"nav-linker-" + color} to = {this.props.urlinfo.url + '/contact'}>CONTACT US</NavLink>
+                </NavItem>
+                <NavItem className = "d-flex align-items-center nav-items my-3 my-md-0">
+                  <NavLink className = {"nav-linker-" + color} to = "/3/home">ELECTIVES</NavLink>
                 </NavItem>
                 <NavItem className = "d-flex align-items-center nav-items my-3 my-md-0">
                   <this.loginHandle color = {color}/>

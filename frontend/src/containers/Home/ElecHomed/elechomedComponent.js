@@ -3,6 +3,7 @@ import { Form, FormGroup, Input, Button, Label } from 'reactstrap';
 import "./elecHomed.css";
 import { Link } from 'react-router-dom';
 import CheckBox from './checkBoxComponent';
+import baseUrl from '../../../baseUrl';
 
 function ListDisplay ({list,title}) {
   console.log(list);
@@ -96,7 +97,7 @@ class CourseDisplay extends Component {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
         const sender = this.props.location.search.split("=")[2];
-        const response = await fetch( '/api/course?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( baseUrl + '/api/course?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -127,7 +128,7 @@ class CourseDisplay extends Component {
           }
         });
         query = query + ')';
-        const response = await fetch( '/api/course?number=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( baseUrl + '/api/course?number=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -213,7 +214,7 @@ class CourseDisplay extends Component {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
         const sender = this.props.location.search.split("=")[2];
-        const response = await fetch( '/api/course?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( baseUrl + '/api/course?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -244,7 +245,7 @@ class CourseDisplay extends Component {
           }
         });
         query = query + ')';
-        const response = await fetch( '/api/course?number=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( baseUrl + '/api/course?number=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();

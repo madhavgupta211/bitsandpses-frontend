@@ -3,6 +3,7 @@ import { Form, FormGroup, Input, Button, Label } from 'reactstrap';
 import "./homed.css";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import baseUrl from '../../../baseUrl';
 
 function ListDisplay ({list,title,color}) {
   console.log(list);
@@ -63,7 +64,7 @@ class Homed extends Component {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
         const sender = this.props.location.search.split("=")[2];
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( baseUrl + '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -80,7 +81,7 @@ class Homed extends Component {
           throw error;
         }
       } else {
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '/all?limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( baseUrl + '/api/' + window.localStorage.getItem("stationNo") + '/all?limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -127,7 +128,7 @@ class Homed extends Component {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
         const sender = this.props.location.search.split("=")[2];
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( baseUrl + '/api/' + window.localStorage.getItem("stationNo") + '?' + sender + '=' + query + '&limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
@@ -144,7 +145,7 @@ class Homed extends Component {
           throw error;
         }
       } else {
-        const response = await fetch( '/api/' + window.localStorage.getItem("stationNo") + '/all?limit=10&skip=' + this.state.stationsDisplayed );
+        const response = await fetch( baseUrl + '/api/' + window.localStorage.getItem("stationNo") + '/all?limit=10&skip=' + this.state.stationsDisplayed );
         if(response.ok)
         {
           const json = await response.json();
