@@ -7,7 +7,7 @@ import RenderComment from './courseComments/courseComments';
 import { withRouter } from 'react-router-dom';
 import SearchBar from '../searchCourseNav/searchCourseNavComponent';
 
-function RenderComments ({list, authorlist, stationName}) {
+function RenderComments ({list, authorlist, courseSlug}) {
   if(!list || list.length === 0) {
     return(
       <div className = "col-12">
@@ -34,7 +34,7 @@ function RenderComments ({list, authorlist, stationName}) {
             key = {comment._id} 
             comment = {comment} 
             authorlist = {authorlist}
-            stationName = {stationName} />
+            courseSlug = {courseSlug} />
           );
         })}    
       </div>
@@ -48,44 +48,71 @@ class CourseDisplay extends Component {
     this.handleCommentChange = this.handleCommentChange.bind(this);
     this.handleCommentSubmit = this.handleCommentSubmit.bind(this);
     this.state = {
-      stationDetails: {
-        station: {
-          name: null,
+      courseDetails: {
+        course: {
+          title: null,
           discussion: []
         },
         users: []
       },
-      stationFound: true,
-      commentField: null
+      courseFound: true,
+      commentField: null,
+      courseDesc: {
+        lectures: []
+      }
     }
   }
   
   async componentDidMount() {
-    const query = this.props.match.params.stationName;
+    console.log(this.props.match.params.courseSlug);
+    const query = this.props.match.params.courseSlug;
     try {
       const response = await fetch('/api/course/' + query);
       if(response.ok) {
         const json = await response.json();
+        console.log(json);
         this.setState({
-          stationDetails: json,
-          stationFound: true
+          courseDetails: json,
+          courseFound: true
         });
       }
       else if(response.status === 404) {
         this.setState({
-          stationFound: false
+          courseFound: false
         })
       }
       else {
         var error = new Error('Error ' + response.status + ': ' + response.statusText);
         error.response = response;
         this.setState({
-          stationFound: false
+          courseFound: false
+        });
+        throw error;
+      }
+
+      const fresponse = await fetch('https://timetablevisualiser-api.herokuapp.com/CourseData?course_number=' + this.state.courseDetails.course.number);
+      if(fresponse.ok) {
+        const json = await fresponse.json();
+        console.log(json);
+        this.setState({
+          courseDesc: json
+        });
+      }
+      else if(fresponse.status === 404) {
+        this.setState({
+          courseFound: false
+        });
+      }
+      else {
+        var error = new Error('Error ' + response.status + ': ' + response.statusText);
+        error.response = response;
+        this.setState({
+          courseFound: false
         });
         throw error;
       }
     } catch(error) {
-      alert("could not fetch Station Details.\nError: "+ error.message);
+      alert("could not fetch course Details.\nError: "+ error.message);
     }
   }
 
@@ -93,7 +120,6 @@ class CourseDisplay extends Component {
     this.setState({
       commentField: event.target.value
     });
-    console.log(this.state.commentField);
   };
 
   handleCommentSubmit = async e => {
@@ -104,7 +130,7 @@ class CourseDisplay extends Component {
       console.log(value);
       const response = await axios({
         method: 'post',
-        url: "/api/course/" + this.props.match.params.stationName + "/comment" ,
+        url: "/api/course/" + this.props.match.params.courseSlug + "/comment" ,
         headers: {
           Authorization: `Bearer ${value}`
         },
@@ -126,27 +152,58 @@ class CourseDisplay extends Component {
 
   render() {
     console.log(this.props);
-    console.log(this.state.stationDetails.users);
-    if(this.state.stationFound === true) {
+    console.log(this.state.courseDesc);
+    if(this.state.courseFound === true) {
+      let professors = [];
+      this.state.courseDesc.lectures.forEach((section) => { 
+        let counter = 3;
+        const substrings = section.split(",");
+        while(counter < substrings.length) {
+          professors.push(substrings[counter]);
+          counter++;
+        } 
+      });
+      let uniprofs = [...new Set(professors)];
+      let uniprofstring = "";
+      let count = 0;
+      while( count < uniprofs.length )
+      {
+        if( count !== 0) {
+          uniprofstring = uniprofstring + ", ";
+        }
+        uniprofstring = uniprofstring + uniprofs[count];
+        count++;
+      }
       return(
         <div className = "envelope-sd">
           <SearchBar/>
           <div className = "container">
             <div className = "col-12 text-center pt-5">
-              <h1 className = "py-2 course-heading">{this.state.stationDetails.station.name}<h5 className = "location-heading pt-1">{this.state.stationDetails.station.location}</h5></h1>
+              <h1 className = "py-2 course-heading">{this.state.courseDetails.course.title}<h5 className = "location-heading pt-1">{this.state.courseDetails.course.number}</h5></h1>
             </div>
-            <div className = "col-12" >
-              <h3 className = "col-12 sub-heading">CGPA cutoffs for respective campuses</h3>
-              <div className = "row mt-3">
-                <h3 className = "col-12 text-center"><br /><br/>To be added soon<br/><br/></h3>
+            <div className = "col-12 text-left mb-3 mt-3">
+              <div className = "course-description p-2">
+                <span className = "description-header display-inline-block">Instructor in-charge:&nbsp;</span>
+                <span className = "description-body display-inline-block">
+                  {this.state.courseDesc.ic}
+                </span><br/>
+                <span className = "description-header">Professors:&nbsp;</span>
+                <span className = "description-body">{uniprofstring}</span><br/>
+                <span className = "description-header">No of credits on completion:&nbsp;</span>
+                <span className = "description-body">{this.state.courseDesc.credits}</span><br/>
+                <span className = "description-header">Description:&nbsp;</span>
+                <span className = "description-body"></span><br/>
               </div>
+            </div>
+            <div className = "col-12">
+            <h3 className = "col-12 sub-heading">Resources</h3>
             </div>
             <div className = "col-12">
               <h3 className = "col-12 sub-heading">Discussion</h3>
               <div className = "discussion-container">
-                <RenderComments list = {this.state.stationDetails.station.discussion} 
-                authorlist = {this.state.stationDetails.users}
-                stationName = {this.props.match.params.stationName} />
+                <RenderComments list = {this.state.courseDetails.course.discussion} 
+                authorlist = {this.state.courseDetails.users}
+                courseSlug = {this.props.match.params.courseSlug} />
                 <div class = "col-12 commenter">
                   <Form autoComplete = "off" className = "col-12">
                     <FormGroup row>

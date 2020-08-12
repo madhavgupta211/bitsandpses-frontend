@@ -32,14 +32,13 @@ class RenderComment extends Component {
 
   handleReplySubmit = async(event) => {
     event.preventDefault();
-    alert(this.state.replyField);
     if(document.cookie.split(';').some((item) => item.trim().startsWith('jwt='))) {
       const cookies = document.cookie.split('; ');
       const value = cookies.find(item => item.startsWith('jwt')).split('=')[1];
       console.log(value);
       const response = await axios({
         method: 'post',
-        url: '/api/course/' + this.props.stationName + "/" + this.props.comment._id + "/reply" ,
+        url: '/api/course/' + this.props.courseSlug + "/" + this.props.comment._id + "/reply" ,
         headers: {
           Authorization: `Bearer ${value}`
         },
@@ -85,7 +84,7 @@ class RenderComment extends Component {
             <div>
               <div className = "col-10 offset-1 col-md-9 col-lg-8">
                 <Card className = "mt-2 mb-1 comment-box">  
-                  <CardTitle className = "mb-1 mt-1 ml-3 text-left author-name" >{authorName}</CardTitle>
+                  <CardTitle className = "mb-1 mt-1 ml-3 text-left author-name" >{repauthorname}</CardTitle>
                   <CardText className = "ml-3 mr-3 mb-2 text-left comment-content">{reply.data}</CardText>
                 </Card>
                 <div className = "text-right">

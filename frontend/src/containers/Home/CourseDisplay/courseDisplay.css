@@ -69,3 +69,41 @@
     border-width: 0px !important;
     width: 100% !important;
 }
+
+.course-description {
+    background-color: white;
+    border-width: 12px !important;
+    border-color: #403D39 !important;
+    border-radius: 20px !important;
+    border-style: solid 
+}
+
+.description-header {
+    color: #2A9134;
+    font-family: 'Ubuntu', serif;
+    font-weight: 500 !important;
+    font-size: x-large;
+}
+
+.description-body {
+    color: #403D39;
+    font-family: 'Ubuntu', serif;
+    font-weight: 400 !important;
+    font-size: x-large;
+}
+
+@media screen and (max-width: 768px) {
+    .description-header {
+        font-size: larger;
+        font-weight: 400 !important;
+    }
+
+    .description-body {
+        font-size: larger;
+        font-weight: 300 !important;
+    }
+}
+
+.profs-names {
+    width: 100% !important;
+}

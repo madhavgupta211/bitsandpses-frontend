@@ -25,7 +25,7 @@ class SearchBar extends Component {
   
   render() {
     return(
-      <div className = "row row-search align-items-center fixed-top envelope zer">
+      <div className = "row row-search align-items-center fixed-top envelope zerk">
         <div className = "col-10 offset-1 col-md-8 offset-md-2 justify-content-center">
           <LocalForm onSubmit = { (values) => { this.preventSearch(values) } } autoComplete = "off" >
             <Row className = "form-group">
@@ -44,7 +44,7 @@ class SearchBar extends Component {
             </Row>
           </LocalForm>
           { this.state.router ? 
-            <Redirect to = { "/" + window.localStorage.getItem("stationNo") + "/home?Search=" + this.state.searchField + "&searchMethod=title" } />
+            <Redirect to = { "/3/home?Search=" + this.state.searchField + "&searchMethod=title" } />
           : null}
         </div>
       </div>

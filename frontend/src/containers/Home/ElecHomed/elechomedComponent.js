@@ -36,6 +36,7 @@ function ListDisplay ({list,title}) {
 
 class CourseDisplay extends Component {
   constructor(props) {
+    window.localStorage.setItem("stationNo","3")
     super(props);
     this.findplaceholder = this.findplaceholder.bind(this);
     this.handleEmptytype = this.handleEmptytype.bind(this);

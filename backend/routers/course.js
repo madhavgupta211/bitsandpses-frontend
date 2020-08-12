@@ -63,7 +63,7 @@ router.get('/api/course', async (req, res) => {
 });
 
 // post a new comment on the opportunity for ps1
-router.post('/api/1/:slug/comment', auth, async (req, res) => {
+router.post('/api/course/:slug/comment', auth, async (req, res) => {
   const course = await Course.findOne({ slug: req.params.slug });
 
   if (!course) {
@@ -87,7 +87,7 @@ router.post('/api/1/:slug/comment', auth, async (req, res) => {
 });
 
 // post a new reply on a comment for ps1
-router.post('/api/1/:slug/:comment/reply', auth, async (req, res) => {
+router.post('/api/course/:slug/:comment/reply', auth, async (req, res) => {
   const course = await Course.findOne({ slug: req.params.slug });
 
   if (!course) {
