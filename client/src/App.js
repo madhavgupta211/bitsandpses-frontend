@@ -6,11 +6,11 @@ import Main from './containers/mainComponent';
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <div className = "App">
         <Main />
       </div>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 
