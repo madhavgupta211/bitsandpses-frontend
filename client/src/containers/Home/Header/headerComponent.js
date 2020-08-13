@@ -80,7 +80,7 @@ class Header extends Component {
     else {
       console.log(color);
       return(
-        <a href = "/auth/google" className = {"nav-linker-" + color}>LOGIN</a>
+        <a href = { baseUrl + "/auth/google" } className = {"nav-linker-" + color}>LOGIN</a>
       );
     }
   };
