@@ -23,7 +23,7 @@ class Contact extends Component {
                         <h5 className = "d-block d-lg-none text-center contact-name-blue">Pratham Gupta</h5>
                         <h6 className = "contact-info">Backend Developer</h6>
                         <h6 className = "contact-info text-center text-md-left mt-4">
-                          <span className = "fa fa-envelope"></span>&nbsp;&nbsp;f20190052@pilani.bits-pilani.ac.in
+                          <span className = "fa fa-envelope"></span>&nbsp;&nbsp;f20190051@pilani.bits-pilani.ac.in
                         </h6>
                         <h6 className = "contact-info text-center text-md-left">
                           <span className = "fa fa-github"></span>&nbsp;&nbsp;pratham1002
