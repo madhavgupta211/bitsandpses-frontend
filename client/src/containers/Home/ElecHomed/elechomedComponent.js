@@ -50,7 +50,7 @@ class CourseDisplay extends Component {
       resultTitle: "All Courses",
       stationsDisplayed: 0,
       shouldLoadMore: true,
-      allCheck: false,
+      allCheck: true,
       courses: [
         { id: 1, value: "BITS", name: "General", isChecked: false},
         { id: 2, value: "BIO", name: "Biology", isChecked: false },
