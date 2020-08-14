@@ -42,6 +42,8 @@ class CourseDisplay extends Component {
     this.findplaceholder = this.findplaceholder.bind(this);
     this.handleEmptytype = this.handleEmptytype.bind(this);
     this.loadMore = this.loadMore.bind(this);
+    this.loadButton = React.createRef();
+    this.loadsmbutton = React.createRef();
     this.state = {
       searchData: null,
       foundResults: false,
@@ -218,6 +220,8 @@ class CourseDisplay extends Component {
   }
 
   loadMore = async(event) => {
+    this.loadButton.current.blur();
+    this.loadsmbutton.current.blur();
     try {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
@@ -226,7 +230,6 @@ class CourseDisplay extends Component {
         if(response.ok)
         {
           const json = await response.json();
-          event.target.blur();
           this.setState({
             searchData: [...this.state.searchData,...json],
             resultTitle: "Searched Courses",
@@ -358,6 +361,7 @@ class CourseDisplay extends Component {
                 <Button color = "link outline-none" 
                  onClick = { (event) => { this.loadMore(event) } } 
                  className = "btn mb-1 load-more"
+                 ref = {this.loadButton}
                  value = "load More"><h5>LOAD MORE</h5></Button> 
               : null}
             </div>
@@ -384,6 +388,7 @@ class CourseDisplay extends Component {
                 <Button color = "link outline-none" 
                  onClick = { (event) => { this.loadMore(event) } } 
                  className = "btn mb-1 load-more"
+                 ref = {this.loadsmbutton}
                  value = "load More"><h5>LOAD MORE</h5></Button> 
               : null}
             </div>
