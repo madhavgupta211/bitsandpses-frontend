@@ -351,7 +351,7 @@ class CourseDisplay extends Component {
               <Form className = "row ml-3" autoComplete = "off">
                 <FormGroup check className = "col-12 mb-2">
                   <Label check className = "filter-label-font">
-                      <Input value = "checked-all" type = "checkbox" isChecked = {this.state.allCheck} onClick = {(event) => {this.toggleCheck(event)}} />Select All
+                      <Input value = "checked-all" type = "checkbox" checked = {this.state.allCheck} onClick = {(event) => {this.toggleCheck(event)}} />Select All
                   </Label>
                 </FormGroup>
                 { this.state.courses.map((course => {
