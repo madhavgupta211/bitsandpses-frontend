@@ -105,6 +105,8 @@ class Homed extends Component {
   }
 
   searchMethod = (event) => {
+    console.log(event.targe.value);
+    console.log(this.state.searchMethod);
     if(event.target.value === this.state.searchMethod) {
       return true;
     }
@@ -114,10 +116,12 @@ class Homed extends Component {
   }
 
   changeSearchMethod = (event) => {
+    console.log(event.target.checked);
     if(event.target.checked) {
       this.setState({
         searchMethod: event.target.value
-      })
+      });
+      console.log(this.state.searchMethod);
     }
   }
 
@@ -221,7 +225,7 @@ class Homed extends Component {
                     <FormGroup check inline className = "mt-4">
                       <Label check className = "label-font">
                         <Input type = "radio" 
-                         name = "searchMethod" 
+                         name = "searchmethod" 
                          value = "name" 
                          checked = { (event) => { this.searchMethodmatch(event) } }
                          onChange = { (event) => { this.changeSearchMethod(event) } }/> By Name
