@@ -115,14 +115,11 @@ class Homed extends Component {
     }
   }
 
-  changeSearchMethod = (event) => {
-    console.log(event.target.checked);
-    if(event.target.checked) {
+  changeSearchMethod = (changeEvent) => {
+    console.log(changeEvent.target.checked);
       this.setState({
-        searchMethod: event.target.value
+        searchMethod: changeEvent.target.value
       });
-      console.log(this.state.searchMethod);
-    }
   }
 
   findplaceholder = () => {
@@ -228,7 +225,7 @@ class Homed extends Component {
                          name = "searchmethod" 
                          value = "name" 
                          checked = { (event) => { this.searchMethodmatch(event) } }
-                         onChange = { (event) => { this.changeSearchMethod(event) } }/> By Name
+                         onChange = { this.changeSearchMethod } /> By Name
                       </Label>
                     </FormGroup>
                     <FormGroup check inline className = "mt-4">
@@ -237,7 +234,7 @@ class Homed extends Component {
                          name = "searchMethod"
                          value = "location" 
                          checked = { (event) => { this.searchMethodmatch(event) } }
-                         onChange = { (event) => { this.changeSearchMethod(event) } }/> By Location
+                         onChange = { this.changeSearchMethod } /> By Location
                       </Label>
                     </FormGroup>
                   </div>
