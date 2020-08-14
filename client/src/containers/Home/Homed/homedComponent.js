@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Form, FormGroup, Input, Button, Label } from 'reactstrap';
 import "./homed.css";
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import baseUrl from '../../../baseUrl';
 
@@ -222,9 +221,9 @@ class Homed extends Component {
                     <FormGroup check inline className = "mt-4">
                       <Label check className = "label-font">
                         <Input type = "radio" 
-                         name = "searchmethod" 
+                         name = "searchMethod" 
                          value = "name" 
-                         checked = { (event) => { this.searchMethodmatch(event) } }
+                         checked = { this.state.searchMethod === "name" }
                          onChange = { this.changeSearchMethod } /> By Name
                       </Label>
                     </FormGroup>
@@ -233,7 +232,7 @@ class Homed extends Component {
                         <Input type = "radio" 
                          name = "searchMethod"
                          value = "location" 
-                         checked = { (event) => { this.searchMethodmatch(event) } }
+                         checked = { this.state.searchMethod === "location" }
                          onChange = { this.changeSearchMethod } /> By Location
                       </Label>
                     </FormGroup>
