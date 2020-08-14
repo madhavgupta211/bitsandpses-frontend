@@ -48,7 +48,8 @@ class Homed extends Component {
       searchField: "",
       resultTitle: "All Stations",
       stationsDisplayed: 0,
-      shouldLoadMore: true
+      shouldLoadMore: true,
+      searchMethod: "name"
     }
   }
   
@@ -72,7 +73,8 @@ class Homed extends Component {
             searchData: json,
             resultTitle: "Search Results",
             stationsDisplayed: this.state.stationsDisplayed + json.length,
-            shouldLoadMore: ( json.length === 10 )
+            shouldLoadMore: ( json.length === 10 ),
+            searchMethod: sender
           });
         }
         else {
@@ -99,6 +101,23 @@ class Homed extends Component {
       }
     } catch(error) {
       alert("could not fetch search results.\nError: "+ error.message);
+    }
+  }
+
+  searchMethod = (event) => {
+    if(event.target.value === this.state.searchMethod) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  changeSearchMethod = (event) => {
+    if(event.target.checked) {
+      this.setState({
+        searchMethod: event.target.value
+      })
     }
   }
 
@@ -201,12 +220,20 @@ class Homed extends Component {
                   <div className = "col-6 col-md-4 offset-md-2 text-left text-md-left padding-remover">
                     <FormGroup check inline className = "mt-4">
                       <Label check className = "label-font">
-                        <Input type = "radio" name = "searchMethod" value = "name" checked/> By Name
+                        <Input type = "radio" 
+                         name = "searchMethod" 
+                         value = "name" 
+                         checked = { (event) => { this.searchMethodmatch(event) } }
+                         onChange = { (event) => { this.changeSearchMethod(event) } }/> By Name
                       </Label>
                     </FormGroup>
                     <FormGroup check inline className = "mt-4">
                       <Label check className = "label-font">
-                        <Input type = "radio" name = "searchMethod" value = "location"/> By Location
+                        <Input type = "radio" 
+                         name = "searchMethod"
+                         value = "location" 
+                         checked = { (event) => { this.searchMethodmatch(event) } }
+                         onChange = { (event) => { this.changeSearchMethod(event) } }/> By Location
                       </Label>
                     </FormGroup>
                   </div>
