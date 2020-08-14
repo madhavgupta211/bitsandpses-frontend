@@ -103,22 +103,10 @@ class Homed extends Component {
     }
   }
 
-  searchMethod = (event) => {
-    console.log(event.targe.value);
-    console.log(this.state.searchMethod);
-    if(event.target.value === this.state.searchMethod) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
   changeSearchMethod = (changeEvent) => {
-    console.log(changeEvent.target.checked);
-      this.setState({
-        searchMethod: changeEvent.target.value
-      });
+    this.setState({
+      searchMethod: changeEvent.target.value
+    });
   }
 
   findplaceholder = () => {

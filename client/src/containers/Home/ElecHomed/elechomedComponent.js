@@ -69,7 +69,8 @@ class CourseDisplay extends Component {
         { id: 15, value: "MF", name: "Manufacturing", isChecked: false },
         { id: 16, value: "PHA", name: "Pharmacy", isChecked: false },
         { id: 17, value: "PHY", name: "Physics", isChecked: false },
-      ]
+      ],
+      searchMethod: "name"
     }
   }
   
@@ -105,7 +106,8 @@ class CourseDisplay extends Component {
             searchData: json,
             resultTitle: "Search Courses",
             stationsDisplayed: this.state.stationsDisplayed + json.length,
-            shouldLoadMore: ( json.length === 10 )
+            shouldLoadMore: ( json.length === 10 ),
+            searchMethod: sender
           });
         }
         else {
@@ -135,7 +137,8 @@ class CourseDisplay extends Component {
           this.setState({
             searchData: json,
             stationsDisplayed: this.state.stationsDisplayed + json.length,
-            shouldLoadMore: ( json.length === 10 )
+            shouldLoadMore: ( json.length === 10 ),
+            searchMethod: "number"
           });
         }
         else {
@@ -151,7 +154,6 @@ class CourseDisplay extends Component {
 
   handleFilters = (event) => {
     event.preventDefault();
-
   }
 
   toggleCheck = (event) => {
@@ -188,6 +190,12 @@ class CourseDisplay extends Component {
     });
   }
   
+  changeSearchMethod = (changeEvent) => {
+    this.setState({
+      searchMethod: changeEvent.target.value
+    });
+  }
+
   findplaceholder = () => {
     if( this.props.location.search !== "") {
       return this.props.location.search.split("=")[1].split("&")[0];
@@ -293,12 +301,20 @@ class CourseDisplay extends Component {
                   <div className = "col-6 col-md-4 offset-md-2 text-left text-md-left padding-remover">
                     <FormGroup check inline className = "mt-4">
                       <Label check className = "elec-label-font">
-                        <Input type = "radio" name = "searchMethod" value = "title" checked/> By Name
+                        <Input type = "radio"
+                         name = "searchMethod" 
+                         value = "title" 
+                         checked = { this.state.searchMethod === "title" }
+                         onChange = {this.changeSearchMethod} /> By Name
                       </Label>
                     </FormGroup>
                     <FormGroup check inline className = "mt-4">
                       <Label check className = "elec-label-font">
-                        <Input type = "radio" name = "searchMethod" value = "number"/> By CourseNo.
+                        <Input type = "radio" 
+                         name = "searchMethod" 
+                         value = "number"
+                         checked = { this.state.searchMethod === "number" } 
+                         onChange = {this.changeSearchMethod} /> By CourseNo.
                       </Label>
                     </FormGroup>
                   </div>
