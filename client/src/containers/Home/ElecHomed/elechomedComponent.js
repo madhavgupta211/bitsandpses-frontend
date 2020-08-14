@@ -218,6 +218,7 @@ class CourseDisplay extends Component {
   }
 
   loadMore = async() => {
+    this.buttonDOM.blur();
     try {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
@@ -354,7 +355,11 @@ class CourseDisplay extends Component {
                 />
               </div>
               { this.state.shouldLoadMore ? 
-                <Button color = "link outline-none" onClick = { this.loadMore } className = "btn mb-1 load-more"><h5>LOAD MORE</h5></Button> 
+                <Button color = "link outline-none" 
+                 onClick = { this.loadMore } 
+                 className = "btn mb-1 load-more"
+                 ref={(buttonDOM) => { this.buttonDOM = buttonDOM; }} 
+                 value = "load More"><h5>LOAD MORE</h5></Button> 
               : null}
             </div>
           </div>
@@ -377,7 +382,11 @@ class CourseDisplay extends Component {
                 />
               </div>
               { this.state.shouldLoadMore ? 
-                <Button color = "link outline-none" onClick = { this.loadMore } className = "btn mb-1 load-more"><h5>LOAD MORE</h5></Button> 
+                <Button color = "link outline-none" 
+                 onClick = { this.loadMore } 
+                 className = "btn mb-1 load-more"
+                 ref={(buttonDOM) => { this.buttonDOM = buttonDOM; }} 
+                 value = "load More"><h5>LOAD MORE</h5></Button> 
               : null}
             </div>
           </div>
