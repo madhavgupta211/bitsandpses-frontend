@@ -226,13 +226,13 @@ class CourseDisplay extends Component {
         if(response.ok)
         {
           const json = await response.json();
+          event.target.blur();
           this.setState({
             searchData: [...this.state.searchData,...json],
             resultTitle: "Searched Courses",
             stationsDisplayed: this.state.stationsDisplayed + json.length,
             shouldLoadMore: ( json.length === 10 )
           });
-          event.target.blur();
         }
         else {
           var error = new Error('Error ' + response.status + ': ' + response.statusText);
