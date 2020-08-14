@@ -218,7 +218,6 @@ class CourseDisplay extends Component {
   }
 
   loadMore = async(event) => {
-    event.target.blur();
     try {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
@@ -233,6 +232,7 @@ class CourseDisplay extends Component {
             stationsDisplayed: this.state.stationsDisplayed + json.length,
             shouldLoadMore: ( json.length === 10 )
           });
+          event.target.blur();
         }
         else {
           var error = new Error('Error ' + response.status + ': ' + response.statusText);
