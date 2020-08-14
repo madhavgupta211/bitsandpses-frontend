@@ -131,6 +131,8 @@ class Homed extends Component {
   }
 
   loadMore = async() => {
+    var x = window.scrollX;
+    var y = window.scrollY;
     try {
       if(this.props.location.search !== "") {
         const query = this.props.location.search.split("=")[1].split("&")[0];
@@ -171,6 +173,7 @@ class Homed extends Component {
     } catch(error) {
       alert("could not fetch search results.\nError: "+ error.message);
     }
+    window.scrollTo(x,y);
   }
 
   render() {
