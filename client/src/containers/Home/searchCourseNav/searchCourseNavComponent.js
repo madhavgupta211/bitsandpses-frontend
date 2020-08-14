@@ -34,7 +34,7 @@ class SearchBar extends Component {
                 model = ".search"
                 name = "search"
                 id = "search"
-                placeholder = "Search for station"
+                placeholder = "Search for course"
                 className = "col-12 form-control search-nav"
                 validators = { { minLength: minLength(1)} } />
               </div>

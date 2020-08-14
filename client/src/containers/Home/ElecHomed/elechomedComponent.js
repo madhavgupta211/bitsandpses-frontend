@@ -82,6 +82,8 @@ class CourseDisplay extends Component {
 
   async componentDidMount() {
     let courses = this.state.courses;
+    let allCheck;
+    window.sessionStorage.getItem("allCheck") === "0" ? allCheck = false : allCheck = true; 
     courses.forEach((course) => {
       if(window.sessionStorage.getItem(course.name) === "0") {
         course.isChecked = false;    
@@ -91,7 +93,8 @@ class CourseDisplay extends Component {
       }
     });
     this.setState({
-      courses: courses
+      courses: courses,
+      allCheck: allCheck
     });
     console.log(this.props);
     try {
@@ -158,6 +161,18 @@ class CourseDisplay extends Component {
 
   toggleCheck = (event) => {
     let courses = this.state.courses;
+    if(event.target.checked) {
+      window.sessionStorage.setItem("allCheck","1");
+      this.setState({
+        allCheck: true
+      });
+    }
+    else {
+      window.sessionStorage.setItem("allCheck","0");
+      this.setState({
+        allCheck: false
+      })
+    }
     courses.forEach((course) => {
       course.isChecked = event.target.checked
       if(course.isChecked) {
