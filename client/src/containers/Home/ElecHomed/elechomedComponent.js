@@ -4,6 +4,7 @@ import "./elecHomed.css";
 import { Link } from 'react-router-dom';
 import CheckBox from './checkBoxComponent';
 import baseUrl from '../../../baseUrl';
+import { CSSTransition } from 'react-transition-group';
 
 function ListDisplay ({list,title}) {
   console.log(list);
@@ -62,7 +63,6 @@ class CourseDisplay extends Component {
         { id: 8, value: "EEE", name: "Electrical & Electronics", isChecked: false },
         { id: 9, value: "GS|\bHSS", name: "Humanities", isChecked: false },
         { id: 10, value: "INSTR", name: "Instrumentation", isChecked: false },
-        { id: 11, value: "CS", name: "CSE", isChecked: false },
         { id: 12, value: "MATH", name: "Mathematics", isChecked: false },
         { id: 13, value: "MBA", name: "MBA", isChecked: false },
         { id: 14, value: "ME", name: "Mechanical", isChecked: false },
@@ -70,7 +70,8 @@ class CourseDisplay extends Component {
         { id: 16, value: "PHA", name: "Pharmacy", isChecked: false },
         { id: 17, value: "PHY", name: "Physics", isChecked: false },
       ],
-      searchMethod: "name"
+      searchMethod: "name",
+      isfilterOpen: false
     }
   }
   
@@ -157,6 +158,12 @@ class CourseDisplay extends Component {
 
   handleFilters = (event) => {
     event.preventDefault();
+  }
+
+  togglefiltersmall = () => {
+    this.setState({
+      isfilterOpen: !this.state.isfilterOpen
+    });
   }
 
   toggleCheck = (event) => {
@@ -380,12 +387,49 @@ class CourseDisplay extends Component {
             </div>
           </div>
         </div>
-        <div className = "row row-contents d-block d-lg-none">
+        <div className = "row row-contents d-block d-lg-none justify-content-center">
           <div className = "filter-box-small">
-            <h2 className = "elec-filter-heading pt-2">Filters</h2>
-            <br/>
-            <h5 className = "elec-filter-heading">To be added soon!</h5>
-            <br />
+            <h2 className = "elec-filter-heading pt-2 pb-2">Filters</h2>
+            <div className = "offset-2 col-8 offset-sm-3 col-sm-6">
+              <Button className = "btn btn-primary small-filter-chooser mb-3" onClick = {this.togglefiltersmall}>
+                <span className = "fa fa-caret-down" />&nbsp;&nbsp;Select filters&nbsp;&nbsp;<span className = "fa fa-caret-down" />
+                <CSSTransition
+                 in = {this.state.isfilterOpen}
+                 timeout = {500}
+                 classNames = "slide"
+                 mountOnEnter = {true}
+                 unmountOnExit = {true}>  
+                  <div className = "filter-pop-up">
+                    <div className = "row">
+                      <div className = "col-12 text-right">
+                        <Button onClick = {this.togglefiltersmall} className = "btn btn-primary pop-up-close my-2 mr-3">
+                          <span className = "fa fa-lg fa-times cross"></span>
+                        </Button>
+                      </div>
+                      <div className = "col-12">
+                        <Form className = "row ml-3" autoComplete = "off">
+                          <FormGroup check className = "col-12 mb-2">
+                            <Label check className = "filter-label-font">
+                                <Input value = "checked-all" type = "checkbox" checked = {this.state.allCheck} onClick = {(event) => {this.toggleCheck(event)}} />Select All
+                            </Label>
+                          </FormGroup>
+                          { this.state.courses.map((course => {
+                            return(
+                              <CheckBox {...course} handleCheckChild = {this.handleCheckChild} />
+                            );
+                          }))}
+                        </Form>
+                      </div>
+                    </div>
+                  </div>
+                </CSSTransition>
+              </Button>
+            </div>
+            <div className = "col-12">
+              <Link>
+                <Button className = "apply-filter-button mb-4 mt-2 pb-2" to = { window.localStorage.getItem("stationNo") + '/home/filtered' }>Apply</Button>
+              </Link>
+            </div>
           </div>
         </div>
         <div className = "container">

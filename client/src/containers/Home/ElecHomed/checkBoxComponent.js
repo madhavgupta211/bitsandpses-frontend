@@ -5,7 +5,7 @@ import './elecHomed.css';
 class CheckBox extends Component {
     render() {
         return(
-            <FormGroup key = {this.props.id} check className = "col-12 mb-2">
+            <FormGroup key = {this.props.id} check className = "checkers col-12 mb-sm-2 ">
                 <Label check className = "filter-label-font">
                     <Input type = "checkbox" 
                      name = "filter-box"

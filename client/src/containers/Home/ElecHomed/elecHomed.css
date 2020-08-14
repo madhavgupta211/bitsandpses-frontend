@@ -183,3 +183,71 @@
     color: #fffcf2 !important;
     font-weight: 300 !important;
 }
+
+.small-filter-chooser {
+    width: 100% !important;
+    background-color: transparent !important;
+    border-radius: 25px !important;
+    border-width: 3px !important;
+    border-color: #EFEFEF !important;
+    border-style: solid !important;
+}
+
+.filter-pop-up {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw !important;
+    height: 100vh !important;
+    overflow: hidden !important;
+    z-index: 5;
+    background-color: rgba(36, 36, 36, 0.9);
+}
+
+.slide-enter {
+    transform: translate(0%, -100%);
+    opacity: 0;
+    height: 50%;
+}
+
+.slide-enter-active {
+    transform: translate(0%, 0%);
+    opacity: 1;
+    height: 100%;
+    transition: transform 500ms ease-in-out, opacity 500ms linear, height 500ms ease-in-out;
+}
+
+.slide-exit {
+    transform: translate(0%, 0%);
+    opacity: 1;
+    height: 100%;
+}
+
+.slide-exit-active {
+    transform: translate(0%, -100%);
+    opacity: 0;
+    height: 50%;
+    transition: transform 500ms ease-in-out, opacity 500ms linear, height 500ms ease-in-out;
+}
+
+.pop-up-close {
+    outline: none !important;
+    box-shadow: none !important;
+    border-width: 0px !important;
+    background-color: transparent !important;
+    color: #EFEFEF !important; 
+}
+
+
+@media screen and (max-width: 500px) {
+    .checkers {
+        margin-bottom: 0.5rem !important;
+    }
+}
+
+@media screen and (max-width: 330px) {
+    .checkers {
+        margin-bottom: 0.2rem !important;
+    }
+}
+
