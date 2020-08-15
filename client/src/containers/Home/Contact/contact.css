@@ -69,3 +69,12 @@
     background-color: white;
     border-radius: 25px;
 }
+
+.contact-link {
+    text-decoration: none !important;
+    color: #403D39 !important;
+}
+
+.contact-link:hover {
+    color: #2a9134 !important;
+}

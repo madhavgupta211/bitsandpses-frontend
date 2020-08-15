@@ -9,6 +9,7 @@ import ElecHomed from './ElecHomed/elechomedComponent';
 import CourseDisplay from './CourseDisplay/courseDisplayComponent';
 import ElecHeader from './ElecHeader/elecHeaderComponent';
 import Contact from './Contact/contactComponent';
+import Footer from './Footer/footerComponent';
 
 class Home extends Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class Home extends Component {
             <Route path = {this.props.match.url + '/station/:stationName'} component = {StationDisplay}/>
             <Redirect to = {this.props.match.url + '/home'} />
           </Switch>
+          <Footer />
         </div>
       );
     }
@@ -41,6 +43,7 @@ class Home extends Component {
             <Route path = {this.props.match.url + '/course/:courseSlug' } component = {CourseDisplay} />
             <Redirect to = {this.props.match.url + '/home'} />
           </Switch>
+          <Footer />
         </div>
       );
     }

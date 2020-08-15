@@ -23,10 +23,14 @@ class Contact extends Component {
                         <h5 className = "d-block d-lg-none text-center contact-name-blue">Pratham Gupta</h5>
                         <h6 className = "contact-info">Backend Developer</h6>
                         <h6 className = "contact-info text-center text-md-left mt-4">
-                          <span className = "fa fa-envelope"></span>&nbsp;&nbsp;f20190051@pilani.bits-pilani.ac.in
+                          <a href = "mailto:f20190052@pilani.bits-pilani.ac.in" className = "contact-link">
+                            <span className = "fa fa-envelope"></span>&nbsp;&nbsp;f20190051@pilani.bits-pilani.ac.in
+                          </a>
                         </h6>
                         <h6 className = "contact-info text-center text-md-left">
-                          <span className = "fa fa-github"></span>&nbsp;&nbsp;pratham1002
+                          <a href = "https://github.com/pratham1002" className = "contact-link">
+                            <span className = "fa fa-github"></span>&nbsp;&nbsp;pratham1002
+                          </a>
                         </h6>
                       </div>
                     </div>
@@ -43,10 +47,14 @@ class Contact extends Component {
                         <h5 className = "d-block d-lg-none text-center contact-name-green">Madhav Gupta</h5>
                         <h6 className = "contact-info">Frontend Developer</h6>
                         <h6 className = "contact-info text-center text-md-left mt-4">
-                          <span className = "fa fa-envelope"></span>&nbsp;&nbsp;f20190063@pilani.bits-pilani.ac.in
+                          <a href = "mailto:f20190063@pilani.bits-pilani.ac.in" className = "contact-link">
+                            <span className = "fa fa-envelope" ></span>&nbsp;&nbsp;f20190063@pilani.bits-pilani.ac.in
+                          </a>
                         </h6>
                         <h6 className = "contact-info text-center text-md-left">
-                          <span className = "fa fa-github"></span>&nbsp;&nbsp;madhavgupta211
+                          <a href = "https://github.com/madhavgupta211" className = "contact-link">
+                            <span className = "fa fa-github"></span>&nbsp;&nbsp;madhavgupta211
+                          </a>
                         </h6>
                       </div>
                     </div>
