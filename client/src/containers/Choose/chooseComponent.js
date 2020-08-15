@@ -51,15 +51,19 @@ function Choose () {
               <h2 className = "d-block d-lg-none small-button-cont">PS2</h2>
             </Link>
           </div>
+          <div className = "elective-button-row row justify-content-center">
+            <div className = "col-6 col-md-5 col-lg-4">
+              <Link className = "btn elective-button align-self-center" to = { '/' + 3 }>
+                Electives
+              </Link>
+            </div>
+          </div>
           <div className = "row justify-content-center">
             <h2 className = "col-7 disclaimer d-none d-lg-block">
             Made by two lonely guys in their pyjamas, dont shove our throats 
             if content on this website turns out to be slightly deviating from actual data. Just like with you,
             BITS Admin was a jerk to us too.
             </h2>
-            <div className = "col-12">
-              <Link to = {'/' + 3}>BITSandPSes(Electives)</Link>
-            </div>
             <h2 className = "col-9 disclaimer d-block d-lg-none">
             Choose the left one if you were robbed 
             of 60k. Right one if you are looking

@@ -393,37 +393,38 @@ class CourseDisplay extends Component {
             <div className = "offset-2 col-8 offset-sm-3 col-sm-6">
               <Button className = "btn btn-primary small-filter-chooser mb-3" onClick = {this.togglefiltersmall}>
                 <span className = "fa fa-caret-down" />&nbsp;&nbsp;Select filters&nbsp;&nbsp;<span className = "fa fa-caret-down" />
-                <CSSTransition
-                 in = {this.state.isfilterOpen}
-                 timeout = {500}
-                 classNames = "slide"
-                 mountOnEnter = {true}
-                 unmountOnExit = {true}>  
-                  <div className = "filter-pop-up">
-                    <div className = "row">
-                      <div className = "col-12 text-right">
-                        <Button onClick = {this.togglefiltersmall} className = "btn btn-primary pop-up-close my-2 mr-3">
-                          <span className = "fa fa-lg fa-times cross"></span>
-                        </Button>
-                      </div>
-                      <div className = "col-12">
-                        <Form className = "row ml-3" autoComplete = "off">
-                          <FormGroup check className = "col-12 mb-2">
-                            <Label check className = "filter-label-font">
-                                <Input value = "checked-all" type = "checkbox" checked = {this.state.allCheck} onClick = {(event) => {this.toggleCheck(event)}} />Select All
-                            </Label>
-                          </FormGroup>
-                          { this.state.courses.map((course => {
-                            return(
-                              <CheckBox {...course} handleCheckChild = {this.handleCheckChild} />
-                            );
-                          }))}
-                        </Form>
-                      </div>
+              </Button>
+              <CSSTransition
+                in = {this.state.isfilterOpen}
+                timeout = {500}
+                appear = {true}
+                classNames = "slide"
+                mountOnEnter = {true}
+                unmountOnExit = {true}>  
+                <div className = "filter-pop-up">
+                  <div className = "row">
+                    <div className = "col-12 text-right">
+                      <Button onClick = {this.togglefiltersmall} className = "btn btn-primary pop-up-close my-2 mr-3">
+                        <span className = "fa fa-lg fa-times cross"></span>
+                      </Button>
+                    </div>
+                    <div className = "col-12">
+                      <Form className = "row ml-3" autoComplete = "off">
+                        <FormGroup check className = "col-12 mb-2">
+                          <Label check className = "filter-label-font">
+                              <Input value = "checked-all" type = "checkbox" checked = {this.state.allCheck} onClick = {(event) => {this.toggleCheck(event)}} />Select All
+                          </Label>
+                        </FormGroup>
+                        { this.state.courses.map((course => {
+                          return(
+                            <CheckBox {...course} handleCheckChild = {this.handleCheckChild} />
+                          );
+                        }))}
+                      </Form>
                     </div>
                   </div>
-                </CSSTransition>
-              </Button>
+                </div>
+              </CSSTransition>
             </div>
             <div className = "col-12">
               <Link>

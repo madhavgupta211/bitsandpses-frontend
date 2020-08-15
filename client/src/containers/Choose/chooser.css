@@ -1,7 +1,7 @@
 .web-name {
     font-family: 'Bree Serif', serif;
     font-size: 4vw;
-    margin-top: 15vh;
+    margin-top: 8vh;
     border-bottom: 1px ridge;
     background-color: white;
 }
@@ -18,7 +18,7 @@
     .web-name {
         font-family: 'Bree Serif', serif;
         font-size: 7vw;
-        margin-top: 19vh;
+        margin-top: 14vh;
     }
 
     .web-subname {
@@ -30,7 +30,7 @@
     }
 
     .disclaimer {
-        margin-top: 20vh;
+        margin-top: 16vh;
     }
 
     .small-button-cont {
@@ -42,7 +42,7 @@
     .web-name {
         font-family: 'Bree Serif', serif;
         font-size: 9vw;
-        margin-top: 21vh;
+        margin-top: 16vh;
     }
 
     .web-subname {
@@ -58,7 +58,7 @@
     }
 
     .disclaimer {
-        margin-top: 23vh;
+        margin-top: 18vh;
     }
 
 }
@@ -98,7 +98,7 @@
 }
 
 .chooser-buttons {
-    margin-top: 20vh;
+    margin-top: 12vh;
 }
 
 .button-gap {
@@ -131,5 +131,27 @@
     font-size: 1rem;
     font-family: 'Ubuntu', serif;
     font-weight: 300;
-    margin-top: 16vh;
+    margin-top: 12vh;
+}
+
+.elective-button-row {
+    margin-top: 10vh !important;
+}
+
+.elective-button {
+    text-decoration: none !important;
+    font-family: 'Bree Serif', serif;
+    font-size: 2rem !important;
+    color: #0353A4 !important;
+    background-color: #EFEFEF !important;
+    border-radius: 100px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    width: 100% !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.elective-button:hover {
+    color: #2A9134 !important;
 }
